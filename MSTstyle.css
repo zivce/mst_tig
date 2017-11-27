@@ -7,15 +7,15 @@ body {
 }
 
 .canvas {
-    margin-top: 3%;
-    margin-left: 3%;
-    border: 1px solid black;
+    margin-top: 2%;
+    margin-left: 2%;
+    /* border: 1px solid black; */
 }
 
 .divSettings {
     width: 3vw;
     height: 3vw;
-    border: 1 solid rgb(158, 4, 4);
+    border: 1px solid rgb(158, 4, 4);
     position: fixed;
     bottom: 0px;
     right: 0px;
