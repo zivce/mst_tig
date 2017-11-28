@@ -12,8 +12,10 @@ window.onload = function(){
       el.onclick = function(){
         let alreadyClicked = this.parentElement.querySelector('.clicked');
         //skida sa prethodnog kliknutog
+
         if(alreadyClicked)
           alreadyClicked.className = "";
+          
         el.className = "";
         el.className += "clicked";
       }

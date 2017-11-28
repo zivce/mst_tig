@@ -12,6 +12,11 @@ p,li {
 	color: #99e1d9;
 }
 
+#button_settings img {
+	width: 50%;
+	margin:25% auto;
+}
+
 #list_of_algs li{
 	height: 20%;
 	width: 60%;
@@ -59,7 +64,7 @@ p,li {
 }
 #button_settings:hover{
 
-		background-color: #A3E7FC;
+		background-color: #5BB3D3;
 }
 
 #button_settings{
