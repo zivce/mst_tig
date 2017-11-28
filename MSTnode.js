@@ -5,4 +5,9 @@ function MSTnode(x, y, id) {
     this.y = y;
     this.id = id;
     this.cost = 0;
+    this.adjacentNodesList = [];
+
+    this.addAdjacentNode = function (adjNode){
+        this.adjacentNodesList.push(adjNode);
+    }
 }

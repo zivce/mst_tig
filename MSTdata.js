@@ -1,6 +1,6 @@
 /* 
-    Sirovi podaci o nodes.
-    Redosled od nodes određuje redosled formiranja edgeva
+    Sirovi podaci o čvorovima grafa.
+    Redosled od nodes određuje redosled formiranja potega
 */
 
 var myIndex = [
@@ -474,12 +474,12 @@ var myRawNodes = [{
 
 
 
-/* obrađeni nodes */
+/* obrađeni čvorovi */
 var myNodes = [];
-/* obrađeni edges */
+/* obrađeni potezi */
 var myEdges = [];
 
-/* obrada sirovih nodes, dobijaju se konačni*/
+/* obrada sirovih čvorova, dobijaju se konačni*/
 (function (raw) {
     raw.forEach((element, indeks )=> {
         var newNode = new MSTnode(~~(element["x"]), ~~(element["y"] + 50), indeks); // na y koordinatu + 50 zbog translacije čvorova na top ivici ivici
@@ -489,7 +489,7 @@ var myEdges = [];
 })(myRawNodes);
 
 
-/* kreiranje edges*/
+/* kreiranje potega*/
 (function () {
     for (var i = 0; i < myIndex.length; i += 3) {
         var i0 = myIndex[i];
@@ -501,8 +501,14 @@ var myEdges = [];
         var n2 = myNodes[i2];
 
         var e1 = new MSTedge(n0, n1, 0, 0);
+        n0.addAdjacentNode(n1);
+        n1.addAdjacentNode(n0);
         var e2 = new MSTedge(n1, n2, 0, 0);
+        n1.addAdjacentNode(n2);
+        n2.addAdjacentNode(n1);
         var e3 = new MSTedge(n2, n0, 0, 0);
+        n2.addAdjacentNode(n0);
+        n0.addAdjacentNode(n2);
 
         myEdges.push(e1);
         myEdges.push(e2);
