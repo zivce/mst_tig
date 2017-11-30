@@ -42,7 +42,15 @@ window.onload = function(){
 
 
     //working on rwd
-    
+    let containerPs = algsList.querySelector("#container_list_of_algs p");
+    let cont = algsList.querySelector(".algs");
+
+    let contLis = cont.querySelectorAll("li");
+
+
+    window.onresize = function(){
+      //ako treba da se doda za velike rez 
+    }
 
 
 /* settings end */
@@ -55,8 +63,4 @@ window.onload = function(){
   myMST.draw();
 
 
-}
-
-window.onresize = function(){
-  console.log(window.innerWidth);
 }
