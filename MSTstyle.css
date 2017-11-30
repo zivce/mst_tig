@@ -17,32 +17,32 @@ body {
 
 li {
 	font-family: "Open Sans";
-	font-size: 30px;
+	font-size: 2vw;
 	text-align: center;;
 	margin-bottom:20px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 400;
-	line-height: 23px;
+	line-height: 3vw;
 	color: #99e1d9;
 }
 
 #container_list_of_algs p{
 	font-family: "Open Sans";
-	font-size: 15px;
+	font-size: 1vw;
 	text-align: center;
 	margin-bottom:20px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 400;
-	line-height: 23px;
+	line-height: 2vw;
 	color: #99e1d9;
 }
 #container_list_of_algs input{
 	margin: 0 auto;
 	display: block;;
 	font-family: "Open Sans";
-	font-size: 20px;
+	font-size: 1.5vw;
 	text-align: center;
 	margin-bottom:20px;
 	font-style: normal;
@@ -54,6 +54,7 @@ li {
 
 
 #container_list_of_algs {
+  padding-top: 1vw;
 	margin: 0 auto;
 	margin-top: auto;
 	width: inherit;
@@ -99,13 +100,14 @@ li {
 
 
 #list_of_algs{
+  
 	background-color: #345;
 	display: none;
 	width:20vw;
-  height: 20vw;
+  height: 25vw;
   position: fixed;
-  bottom: 100px;
-  right: 120px;
+  bottom: 5vw;
+  right: 5vw;
 	transition(all 0.25s ease-in-out)
 
 }
