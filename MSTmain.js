@@ -49,7 +49,9 @@ window.onload = function(){
 
 
     window.onresize = function(){
-      //ako treba da se doda za velike rez 
+      //ako treba da se doda za velike rez
+      //test samo...
+      console.log(window.innerWidth)
     }
 
 
