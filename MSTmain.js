@@ -41,7 +41,8 @@ window.onload = function(){
     }
 
 
-
+    //working on rwd
+    
 
 
 /* settings end */
@@ -54,4 +55,8 @@ window.onload = function(){
   myMST.draw();
 
 
+}
+
+window.onresize = function(){
+  console.log(window.innerWidth);
 }

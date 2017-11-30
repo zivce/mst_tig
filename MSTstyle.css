@@ -56,8 +56,8 @@ li {
 #container_list_of_algs {
 	margin: 0 auto;
 	margin-top: auto;
-	width: 80%;
-	height: 80%;
+	width: inherit;
+	height: inherit;
 }
 #button_settings img {
 	width: 50%;
@@ -98,26 +98,11 @@ li {
 }
 
 
-//rwd for lower then 900px.
-
-@media screen and (max-width: 900px) {
-
-	#list_of_algs{
-
-		width:20vw;
-	  height: 20vw;
-	}
-
-
-
-}
-
-
 #list_of_algs{
 	background-color: #345;
 	display: none;
-	width:30vw;
-  height: 30vw;
+	width:20vw;
+  height: 20vw;
   position: fixed;
   bottom: 100px;
   right: 120px;
@@ -133,8 +118,8 @@ li {
 	//background-color: #8fb339;
 	background-color: #345;
   text-align: center;
-  width:100px;
-  height: 100px;
+  width:5vw;
+  height: 5vw;
   position: fixed;;
   bottom: 0;
   right: 0;
