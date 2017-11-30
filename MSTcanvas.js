@@ -14,7 +14,10 @@ function MSTCanvas() {
     var cNodesList = [];
 
     // contextList, ctxList, lista svih context-a edge-va
-    var cEdgesList = [];;
+    var cEdgesList = [];
+
+    // pocetni cbor
+    var startingNode = null;
 
     //gui osnova
 
@@ -72,6 +75,9 @@ function MSTCanvas() {
         this.edgeList = list;
     }
 
+    this.setStartingNode = function (nodeID) {
+        startingNode = that.nodeList[nodeID];
+    }
 
     //crtanje
 
@@ -80,6 +86,8 @@ function MSTCanvas() {
         c.clearRect(0, 0, canvas.width, canvas.height);
         drawEdges();
         drawNodes();
+        that.setStartingNode(0);
+        drawStartingNode();
     }
 
 
@@ -87,7 +95,7 @@ function MSTCanvas() {
     function drawNodes() {
         that.nodeList.forEach(element => {
             c.node = element;
-            c.nodeRadius = 30;
+            c.nodeRadius = 40;
             c.beginPath();
             c.fillStyle = "black";
             c.arc(c.node.x, c.node.y, c.nodeRadius, 0, 2 * Math.PI, false);
@@ -95,29 +103,28 @@ function MSTCanvas() {
             c.stroke();
             c.closePath();
 
-            
+
             c.beginPath();
             c.fillStyle = "red";
-            c.fillRect(c.node.x +44 , c.node.y + 8 , 60, 60);  
+            c.fillRect(c.node.x + 44, c.node.y + 8, 60, 60);
             c.stroke();
             c.closePath();
 
 
             c.beginPath();
             c.fillStyle = "black";
-            c.font = "40px Verdana";     
+            c.font = "40px Verdana";
             c.fillText(c.node.id, c.node.x + 50, c.node.y + 50)
             c.fill();
             c.stroke();
             c.closePath();
-            
+
             cNodesList.push(Object.assign({}, c));
         });
 
     }
 
     function drawEdges() {
-        // console.log(that.edgeList.length);
         that.edgeList.forEach(element => {
             c.edge = element;
             c.beginPath();
@@ -128,5 +135,18 @@ function MSTCanvas() {
             cEdgesList.push(Object.assign({}, c));
         });
     }
+
+    function drawStartingNode() {
+        c.node = startingNode;
+        c.nodeRadius = 40;
+        c.beginPath();
+        c.fillStyle = "green";
+        c.arc(c.node.x, c.node.y, c.nodeRadius, 0, 2 * Math.PI, false);
+        c.fill();
+        c.stroke();
+        c.closePath();
+        cNodesList.push(Object.assign({}, c));
+    };
+
 
 }

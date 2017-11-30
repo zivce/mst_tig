@@ -1,13 +1,27 @@
 function MSTnode(x, y, id) {
     var that = this;
 
+    this.id = id;
     this.x = x;
     this.y = y;
-    this.id = id;
     this.cost = 0;
     this.adjacentNodesList = [];
+    this.edgesList = [];
 
-    this.addAdjacentNode = function (adjNode){
+    this.addAdjacentNodeTolist = function (adjNode) {
         this.adjacentNodesList.push(adjNode);
     }
+
+    this.addEdgeToList = function (edge) {
+        this.edgesList.push(edge);
+    }
+
+    this.removeDuplicates = function () {
+        this.adjacentNodesList = Array.from(new Set(this.adjacentNodesList));
+        this.edgesList = Array.from(new Set(this.edgesList));
+    }
+
+
+
+
 }

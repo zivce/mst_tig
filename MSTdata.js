@@ -3,6 +3,7 @@
     Redosled od nodes određuje redosled formiranja potega
 */
 
+/* Indeksi sirovih cvorova */
 var myIndex = [
     14,
     13,
@@ -269,7 +270,6 @@ var myIndex = [
     38,
     17
 ]
-
 var myRawNodes = [{
         "x": 2153.822008603159,
         "y": 433.80571613719906
@@ -335,7 +335,7 @@ var myRawNodes = [{
         "y": 278.1493784904945
     },
     {
-        "x": 3819.811681689389,
+        "x": 4100.811681689389,
         "y": 2021.176412527423
     },
     {
@@ -355,7 +355,8 @@ var myRawNodes = [{
         "y": 2140.7452354234715
     },
     {
-        "x": 3203.9474790309428,        /* 21 */
+        "x": 3203.9474790309428,
+        /* 21 */
         "y": 150.69366049159096
     },
     {
@@ -395,7 +396,8 @@ var myRawNodes = [{
         "y": 1475.5748497150362
     },
     {
-        "x": 2900.5393777542413,    /* 31 */
+        "x": 2900.5393777542413,
+        /* 31 */
         "y": 500.59766247723076
     },
     {
@@ -472,25 +474,26 @@ var myRawNodes = [{
     }
 ]
 
-
-
 /* obrađeni čvorovi */
 var myNodes = [];
 /* obrađeni potezi */
 var myEdges = [];
 
+/* Pocetni cvor */
+var startingNode = myNodes[0];
+
 /* obrada sirovih čvorova, dobijaju se konačni*/
 (function (raw) {
-    raw.forEach((element, indeks )=> {
+    raw.forEach((element, indeks) => {
         var newNode = new MSTnode(~~(element["x"]), ~~(element["y"] + 50), indeks); // na y koordinatu + 50 zbog translacije čvorova na top ivici ivici
         myNodes.push(newNode);
     });
-    console.log(myNodes);
 })(myRawNodes);
 
 
 /* kreiranje potega*/
 (function () {
+    /*  var edgeId = 0; */
     for (var i = 0; i < myIndex.length; i += 3) {
         var i0 = myIndex[i];
         var i1 = myIndex[i + 1];
@@ -500,18 +503,32 @@ var myEdges = [];
         var n1 = myNodes[i1];
         var n2 = myNodes[i2];
 
-        var e1 = new MSTedge(n0, n1, 0, 0);
-        n0.addAdjacentNode(n1);
-        n1.addAdjacentNode(n0);
-        var e2 = new MSTedge(n1, n2, 0, 0);
-        n1.addAdjacentNode(n2);
-        n2.addAdjacentNode(n1);
-        var e3 = new MSTedge(n2, n0, 0, 0);
-        n2.addAdjacentNode(n0);
-        n0.addAdjacentNode(n2);
+        var e0 = new MSTedge(n0, n1, 0, 0 /* edgeId++ */ );
+        n0.addAdjacentNodeTolist(n1);
+        n1.addAdjacentNodeTolist(n0);
+        n0.addEdgeToList(e0);
+        n1.addEdgeToList(e0);
 
+        var e1 = new MSTedge(n1, n2, 0, 0 /* edgeId++ */ );
+        n1.addAdjacentNodeTolist(n2);
+        n2.addAdjacentNodeTolist(n1);
+        n1.addEdgeToList(e1);
+        n2.addEdgeToList(e1);
+
+        var e2 = new MSTedge(n2, n0, 0, 0 /* edgeId++ */ );
+        n2.addAdjacentNodeTolist(n0);
+        n0.addAdjacentNodeTolist(n2);
+        n2.addEdgeToList(e2);
+        n0.addEdgeToList(e2);
+
+        myEdges.push(e0);
         myEdges.push(e1);
         myEdges.push(e2);
-        myEdges.push(e3);
     }
+    myNodes.forEach(function (tmpNode) {
+        tmpNode.removeDuplicates();
+    });
+    console.log(myNodes);
+    myEdges = Array.from(new Set(myEdges));
+    console.log(myEdges);
 })();
