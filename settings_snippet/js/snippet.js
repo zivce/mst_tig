@@ -15,7 +15,7 @@ window.onload = function(){
 
         if(alreadyClicked)
           alreadyClicked.className = "";
-          
+
         el.className = "";
         el.className += "clicked";
       }
@@ -38,5 +38,8 @@ window.onload = function(){
 
 
 
+}
 
+window.onresize = function(){
+  console.log(window.innerWidth);
 }
