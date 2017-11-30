@@ -23,7 +23,7 @@ li {
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 400;
-	line-height: 3vw;
+	line-height: 2.7vw;
 	color: #99e1d9;
 }
 
@@ -31,11 +31,11 @@ li {
 	font-family: "Open Sans";
 	font-size: 1vw;
 	text-align: center;
-	margin-bottom:20px;
+	margin-bottom:1vw;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 400;
-	line-height: 2vw;
+	line-height: 1vw;
 	color: #99e1d9;
 }
 #container_list_of_algs input{
@@ -44,17 +44,16 @@ li {
 	font-family: "Open Sans";
 	font-size: 1.5vw;
 	text-align: center;
-	margin-bottom:20px;
+	margin-bottom:1vw;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 400;
-	line-height: 23px;
 	color: #000;
 }
 
 
 #container_list_of_algs {
-  padding-top: 1vw;
+
 	margin: 0 auto;
 	margin-top: auto;
 	width: inherit;
@@ -100,7 +99,7 @@ li {
 
 
 #list_of_algs{
-  
+
 	background-color: #345;
 	display: none;
 	width:20vw;
@@ -117,7 +116,6 @@ li {
 }
 
 #button_settings{
-	//background-color: #8fb339;
 	background-color: #345;
   text-align: center;
   width:5vw;
