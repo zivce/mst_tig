@@ -63,6 +63,7 @@ function Graf (pnode, pedge)
         workingNode.visited = true;
       else
         return;
+
       let neighborsArr = this.EdgeList.map((edge)=>{
         if(edge.firstNode === workingNode){
           return edge.secondNode;
@@ -88,22 +89,22 @@ function Graf (pnode, pedge)
     *  working..
     */
     this.mst = function(){
-      this.EdgeList.sort( this.sortMethod );
+      self.EdgeList.sort( self.sortMethod );
 
       let i = 0;
 
-      while( i < this.EdgeList.length){
+      while( i < self.EdgeList.length){
 
-        let e = this.EdgeList[i];
+        let e = self.EdgeList[i];
         //del edge at i
-        this.EdgeList.splice(i,1);
+        self.EdgeList.splice(i,1);
 
         //utility to check connections
         self.dfs(1);
         //mst must be connected
         if(!self.connected())
           {
-            this.EdgeList.splice(i,0,e);
+            self.EdgeList.splice(i,0,e);
             i = i + 1;
           }
 
@@ -111,6 +112,7 @@ function Graf (pnode, pedge)
       }//end while
 
       //working
+      console.log("min sp tree");
       console.log(this.EdgeList);
 
     }//end mst
