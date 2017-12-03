@@ -73,8 +73,6 @@ function Graf (pnode, pedge)
         }
       })
 
-
-
       for(let i = 0;i<neighborsArr.length;i++){
         if(typeof neighborsArr[i] !== "undefined")
           this.dfs(neighborsArr[i].id);
@@ -101,7 +99,6 @@ function Graf (pnode, pedge)
         let e = self.EdgeList[i];
         //del edge at i
         self.EdgeList.splice(i,1);
-
         //utility to check connections
         self.dfs(1);
         //mst must be connected
@@ -111,13 +108,13 @@ function Graf (pnode, pedge)
             i = i + 1;
           }
 
+        console.log(self.EdgeList);
         self.resetVisits();
       }//end while
 
       //working
       console.log("min sp tree");
       console.log(this.EdgeList);
-
     }//end mst
 
 

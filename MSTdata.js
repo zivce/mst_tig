@@ -1,4 +1,4 @@
-/* 
+/*
     Sirovi podaci o čvorovima grafa.
     Redosled od nodes određuje redosled formiranja potega
 */
@@ -479,6 +479,9 @@ var myNodes = [];
 /* obrađeni potezi */
 var myEdges = [];
 
+
+
+
 /* Pocetni cvor */
 var startingNode = myNodes[0];
 
@@ -493,7 +496,7 @@ var startingNode = myNodes[0];
 
 /* kreiranje potega*/
 (function () {
-    /*  var edgeId = 0; */
+     var edgeId = 0; 
     for (var i = 0; i < myIndex.length; i += 3) {
         var i0 = myIndex[i];
         var i1 = myIndex[i + 1];
@@ -503,19 +506,19 @@ var startingNode = myNodes[0];
         var n1 = myNodes[i1];
         var n2 = myNodes[i2];
 
-        var e0 = new MSTedge(n0, n1, 0, 0 /* edgeId++ */ );
+        var e0 = new MSTedge(n0, n1, edgeId,  edgeId++  );
         n0.addAdjacentNodeTolist(n1);
         n1.addAdjacentNodeTolist(n0);
         n0.addEdgeToList(e0);
         n1.addEdgeToList(e0);
 
-        var e1 = new MSTedge(n1, n2, 0, 0 /* edgeId++ */ );
+        var e1 = new MSTedge(n1, n2, edgeId,  edgeId++  );
         n1.addAdjacentNodeTolist(n2);
         n2.addAdjacentNodeTolist(n1);
         n1.addEdgeToList(e1);
         n2.addEdgeToList(e1);
 
-        var e2 = new MSTedge(n2, n0, 0, 0 /* edgeId++ */ );
+        var e2 = new MSTedge(n2, n0, edgeId,  edgeId++  );
         n2.addAdjacentNodeTolist(n0);
         n0.addAdjacentNodeTolist(n2);
         n2.addEdgeToList(e2);
