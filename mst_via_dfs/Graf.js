@@ -52,8 +52,8 @@ function Graf (pnode, pedge)
     */
     this.count = 0;
     this.dfs = function(id){
-    
-      console.log(id);
+
+      //console.log(id);
       //puca za id == 0
       let workingNode = self.NodeList.find((node) => {
         if(node.id === id)
@@ -66,7 +66,7 @@ function Graf (pnode, pedge)
       else
         return;
 
-      console.log(workingNode);
+      //console.log(workingNode);
       //console.log(this.count++);
       let neighborsArr = this.EdgesOfMST.map((edge)=>{
         if(edge.firstNode === workingNode){
@@ -96,7 +96,7 @@ function Graf (pnode, pedge)
     */
     this.mst = function(){
       self.EdgesOfMST.sort( self.sortMethod );
-      console.log(self.EdgesOfMST);
+      //console.log(self.EdgesOfMST);
       let i = 0;
 
       while( i < self.EdgesOfMST.length){
@@ -113,7 +113,7 @@ function Graf (pnode, pedge)
             i = i + 1;
           }
 
-        console.log(self.EdgesOfMST);
+        //console.log(self.EdgesOfMST);
         self.resetVisits();
       }//end while
 
