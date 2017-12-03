@@ -67,6 +67,9 @@ function Graf (pnode, pedge)
       let neighborsArr = this.EdgeList.map((edge)=>{
         if(edge.firstNode === workingNode){
           return edge.secondNode;
+
+        if(edge.secondNode === workingNode)
+          return edge.firstNode;
         }
       })
 
