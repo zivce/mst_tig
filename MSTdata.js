@@ -488,7 +488,8 @@ var startingNode = myNodes[0];
 /* obrada sirovih čvorova, dobijaju se konačni*/
 (function (raw) {
     raw.forEach((element, indeks) => {
-        var newNode = new MSTnode(~~(element["x"]), ~~(element["y"] + 50), indeks); // na y koordinatu + 50 zbog translacije čvorova na top ivici ivici
+        var newNode = new MSTnode(~~(element["x"]), ~~(element["y"] + 50), indeks);
+        // na y koordinatu + 50 zbog translacije čvorova na top ivici ivici
         myNodes.push(newNode);
     });
 })(myRawNodes);
@@ -496,7 +497,7 @@ var startingNode = myNodes[0];
 
 /* kreiranje potega*/
 (function () {
-     var edgeId = 0; 
+     var edgeId = 0;
     for (var i = 0; i < myIndex.length; i += 3) {
         var i0 = myIndex[i];
         var i1 = myIndex[i + 1];
@@ -528,10 +529,16 @@ var startingNode = myNodes[0];
         myEdges.push(e1);
         myEdges.push(e2);
     }
+    
     myNodes.forEach(function (tmpNode) {
         tmpNode.removeDuplicates();
     });
-    console.log(myNodes);
+
+    /*
     myEdges = Array.from(new Set(myEdges));
+      */
+
+    console.log(myNodes);
     console.log(myEdges);
+
 })();
