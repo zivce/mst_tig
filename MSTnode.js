@@ -1,12 +1,12 @@
 function MSTnode(x, y, id) {
     var that = this;
 
-    this.id = id;
+    this.id = id+1;
     this.x = x;
     this.y = y;
     this.cost = 0;
     this.visited = false;
-    
+
     this.adjacentNodesList = [];
     this.edgesList = [];
 

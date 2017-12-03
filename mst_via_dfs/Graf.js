@@ -52,6 +52,7 @@ function Graf (pnode, pedge)
     */
     this.count = 0;
     this.dfs = function(id){
+    
       console.log(id);
       //puca za id == 0
       let workingNode = self.NodeList.find((node) => {
@@ -66,7 +67,7 @@ function Graf (pnode, pedge)
         return;
 
       console.log(workingNode);
-      console.log(this.count++);
+      //console.log(this.count++);
       let neighborsArr = this.EdgesOfMST.map((edge)=>{
         if(edge.firstNode === workingNode){
           return edge.secondNode;
