@@ -71,9 +71,11 @@ function Graf (pnode, pedge)
       let neighborsArr = this.EdgesOfMST.map((edge)=>{
         if(edge.firstNode === workingNode){
           return edge.secondNode;
-
+        //jel treba ovo posto su bidirekcione grane ? ?
+        /*
         if(edge.secondNode === workingNode)
           return edge.firstNode;
+        */
         }
       })
       //console.log(neighborsArr);
