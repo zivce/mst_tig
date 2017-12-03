@@ -542,7 +542,9 @@ var startingNode = myNodes[0];
     //console.log(myEdges);
     let g = new Graf(myNodes,myEdges);
     console.log(g.NodeList);
+    //Checking in milliseconds
+    let a = performance.now();
     g.mst();
-
-
+    let b = performance.now();
+    console.log("took" + (b-a) + "ms for reverse delete to complete");
 })();
