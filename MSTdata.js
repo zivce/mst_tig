@@ -541,6 +541,7 @@ var startingNode = myNodes[0];
     //console.log(myNodes);
     //console.log(myEdges);
     let g = new Graf(myNodes,myEdges);
+    console.log(g.NodeList);
     g.mst();
 
 
