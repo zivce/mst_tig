@@ -5,6 +5,7 @@ function MSTnode(x, y, id) {
     this.x = x;
     this.y = y;
     this.cost = 0;
+
     this.adjacentNodesList = [];
     this.edgesList = [];
 

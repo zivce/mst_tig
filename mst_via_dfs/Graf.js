@@ -4,9 +4,10 @@ function Graf (pnode, pedge)
     let self = this;
 
     this.NodeList = pnode.slice();
-    this.EdgeList= pedge.slice();
 
-    this.oldEdges = this.EdgeList.slice();
+    this.EdgesOfMST= pedge.slice();
+
+    this.oldEdges = this.EdgesOfMST.slice();
 
     console.log(this.oldEdges);
     //za sortiranje po opadajucem kriterijumu
@@ -58,13 +59,14 @@ function Graf (pnode, pedge)
 
       });
 
+      console.log(workingNode);
 
       if(!workingNode.visited)
         workingNode.visited = true;
       else
         return;
 
-      let neighborsArr = this.EdgeList.map((edge)=>{
+      let neighborsArr = this.EdgesOfMST.map((edge)=>{
         if(edge.firstNode === workingNode){
           return edge.secondNode;
 
@@ -72,6 +74,7 @@ function Graf (pnode, pedge)
           return edge.firstNode;
         }
       })
+      console.log(neighborsArr);
 
       for(let i = 0;i<neighborsArr.length;i++){
         if(typeof neighborsArr[i] !== "undefined")
@@ -90,34 +93,30 @@ function Graf (pnode, pedge)
     *  working..
     */
     this.mst = function(){
-      self.EdgeList.sort( self.sortMethod );
+      self.EdgesOfMST.sort( self.sortMethod );
 
       let i = 0;
 
-      while( i < self.EdgeList.length){
+      while( i < self.EdgesOfMST.length){
 
-        let e = self.EdgeList[i];
+        let e = self.EdgesOfMST[i];
         //del edge at i
-        self.EdgeList.splice(i,1);
+        self.EdgesOfMST.splice(i,1);
         //utility to check connections
         self.dfs(1);
         //mst must be connected
         if(!self.connected())
           {
-            self.EdgeList.splice(i,0,e);
+            self.EdgesOfMST.splice(i,0,e);
             i = i + 1;
           }
 
-        console.log(self.EdgeList);
+        console.log(self.EdgesOfMST);
         self.resetVisits();
       }//end while
 
       //working
       console.log("min sp tree");
-      console.log(this.EdgeList);
+      console.log(this.EdgesOfMST);
     }//end mst
-
-
-
-
 }//end_graf

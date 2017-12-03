@@ -529,7 +529,7 @@ var startingNode = myNodes[0];
         myEdges.push(e1);
         myEdges.push(e2);
     }
-    
+
     myNodes.forEach(function (tmpNode) {
         tmpNode.removeDuplicates();
     });
@@ -538,7 +538,10 @@ var startingNode = myNodes[0];
     myEdges = Array.from(new Set(myEdges));
       */
 
-    console.log(myNodes);
-    console.log(myEdges);
+    //console.log(myNodes);
+    //console.log(myEdges);
+    let g = new Graf(myNodes,myEdges);
+    g.mst();
+
 
 })();
