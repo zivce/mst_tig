@@ -546,5 +546,5 @@ var startingNode = myNodes[0];
     let a = performance.now();
     g.mst();
     let b = performance.now();
-    console.log("took" + (b-a) + "ms for reverse delete to complete");
+    console.log("took " + Math.round((b-a)) + "ms for reverse delete to complete");
 })();
