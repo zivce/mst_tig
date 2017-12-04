@@ -1,4 +1,4 @@
-function MSTedge(firstNode, secondNode, weight, id) {
+function MSTEdge(firstNode, secondNode, weight, id) {
     var that = this;
 
     this.firstNode = firstNode;

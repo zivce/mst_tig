@@ -270,7 +270,8 @@ var myIndex = [
     38,
     17
 ]
-var myRawNodes = [{
+var myRawNodes = [
+    {
         "x": 2153.822008603159,
         "y": 433.80571613719906
     },
@@ -474,21 +475,18 @@ var myRawNodes = [{
     }
 ]
 
-/* obrađeni čvorovi */
+/* obrađeni čvorovi i potezi, koriste se u algoritmovima*/
 var myNodes = [];
 /* obrađeni potezi */
 var myEdges = [];
+/* rezultujući edgevi nakon mst algoritma, ovo crtam crveno */
+var myResultEdges = [];
 
-
-
-
-/* Pocetni cvor */
-var startingNode = myNodes[0];
 
 /* obrada sirovih čvorova, dobijaju se konačni*/
 (function (raw) {
     raw.forEach((element, indeks) => {
-        var newNode = new MSTnode(~~(element["x"]), ~~(element["y"] + 50), indeks);
+        var newNode = new MSTNode(~~(element["x"]), ~~(element["y"] + 50), indeks);
         // na y koordinatu + 50 zbog translacije čvorova na top ivici ivici
         myNodes.push(newNode);
     });
@@ -507,19 +505,19 @@ var startingNode = myNodes[0];
         var n1 = myNodes[i1];
         var n2 = myNodes[i2];
 
-        var e0 = new MSTedge(n0, n1, edgeId,  edgeId++  );
+        var e0 = new MSTEdge(n0, n1, edgeId,  edgeId++  );
         n0.addAdjacentNodeTolist(n1);
         n1.addAdjacentNodeTolist(n0);
         n0.addEdgeToList(e0);
         n1.addEdgeToList(e0);
 
-        var e1 = new MSTedge(n1, n2, edgeId,  edgeId++  );
+        var e1 = new MSTEdge(n1, n2, edgeId,  edgeId++  );
         n1.addAdjacentNodeTolist(n2);
         n2.addAdjacentNodeTolist(n1);
         n1.addEdgeToList(e1);
         n2.addEdgeToList(e1);
 
-        var e2 = new MSTedge(n2, n0, edgeId,  edgeId++  );
+        var e2 = new MSTEdge(n2, n0, edgeId,  edgeId++  );
         n2.addAdjacentNodeTolist(n0);
         n0.addAdjacentNodeTolist(n2);
         n2.addEdgeToList(e2);
@@ -529,16 +527,8 @@ var startingNode = myNodes[0];
         myEdges.push(e1);
         myEdges.push(e2);
     }
-    
-    myNodes.forEach(function (tmpNode) {
+
+    myNodes.forEach(function(tmpNode) {
         tmpNode.removeDuplicates();
     });
-
-    /*
-    myEdges = Array.from(new Set(myEdges));
-      */
-
-    console.log(myNodes);
-    console.log(myEdges);
-
 })();

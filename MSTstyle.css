@@ -1,132 +1,81 @@
 html,
 body {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100%;
-    height: 100%;
+	margin: 0 !important;
+	padding: 0 !important;
+	width: 100%;
+	height: 100%;
 }
 
 .canvas {
-    margin-top: 2%;
-    margin-left: 2%;
-    /* border: 1px solid black; */
+	margin-top: 2%;
+	margin-left: 3%;
+	/* border: 1px solid black; */
 }
 
+#buttonSettings {
+	background-color: #334455;
+	width: 5vw;
+	height: 5vw;
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+}
 
+#buttonSettings img {
+	width: 50%;
+	margin: 25%;
+}
 
+#buttonSettings:hover {
+	background-color: #649aeb;
+}
 
-li {
-	font-family: "Open Sans";
+#settingsMenu {
+	background-color: #334455;
+	width: 20vw;
+	height: 40vw;
+	position: fixed;
+	bottom: 5vw;
+	right: -20vw;
+	-webkit-transition: 500ms;
+}
+
+#settingsMenu p {
 	font-size: 2vw;
-	text-align: center;;
-	margin-bottom:20px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 400;
-	line-height: 2.7vw;
+	text-align: center;
+	margin: 1vw;
 	color: #99e1d9;
 }
 
-#container_list_of_algs p{
-	font-family: "Open Sans";
-	font-size: 1vw;
-	text-align: center;
-	margin-bottom:1vw;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 400;
-	line-height: 1vw;
-	color: #99e1d9;
-}
-#container_list_of_algs input{
-	margin: 0 auto;
-	display: block;;
-	font-family: "Open Sans";
+#settingsMenu input {
+	width: 16vw;
+	height: 3vw;
+	margin: 1vw;
 	font-size: 1.5vw;
 	text-align: center;
-	margin-bottom:1vw;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 400;
-	color: #000;
+	color: #000000;
+	text-decoration: none;
+}
+#settingsMenu select {
+	width: 16vw;
+	height: 3vw;
+	margin: 1vw;
+	font-size: 1.5vw;
+	text-align: center;
+	color: #000000;
+	text-decoration: none;
 }
 
-
-#container_list_of_algs {
-
-	margin: 0 auto;
-	margin-top: auto;
-	width: inherit;
-	height: inherit;
-}
-#button_settings img {
-	width: 50%;
-	margin:25% auto;
-}
-
-#list_of_algs li{
-	height: 60%;
-	width: 60%;
-	margin:20px auto;
-}
-.clicked {
-	font-weight: 600;
-	background-color: #A3E7FC;
-	color: #011627;
-}
-#list_of_algs li:hover{
-
-	font-weight: 600;
-	background-color: #A3E7FC;
-	color: #011627;
-	cursor: pointer;
-	cursor : hand;
-}
-
-#list_of_algs ul{
-		padding: 0;
-		font-family: "Open Sans";
-		font-style: normal;
-		font-variant: normal;
-		font-weight: 400;
-		line-height: 23px;
-		list-style: none;
-}
-
-.opened{
-	opacity: 1;
-}
-
-
-#list_of_algs{
-
-	background-color: #345;
-	display: none;
-	width:20vw;
-  height: 25vw;
-  position: fixed;
-  bottom: 5vw;
-  right: 5vw;
-	transition(all 0.25s ease-in-out)
-
-}
-#button_settings:hover{
-
-		background-color: #5BB3D3;
-}
-
-#button_settings{
-	background-color: #345;
-  text-align: center;
-  width:5vw;
-  height: 5vw;
-  position: fixed;;
-  bottom: 0;
-  right: 0;
-}
-
-#img_setting
-{
-  width: 50%;
-  margin-top: 25px;
+#divRun{
+	width: 8vw;
+	height: 3vw;
+	margin: 1vw;
+	margin-top:10vw;
+	padding-top: 1vw;
+	font-size: 1.5vw;
+	text-align: center;
+	background-color: #334455;
+	color: #ffffff;
+	text-decoration: none;
+	border: 0.5vw solid #649aeb;
 }
