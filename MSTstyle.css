@@ -33,7 +33,7 @@ body {
 #settingsMenu {
 	background-color: #334455;
 	width: 20vw;
-	height: 40vw;
+	height: 44vw;
 	position: fixed;
 	bottom: 5vw;
 	right: -20vw;
@@ -47,7 +47,7 @@ body {
 	color: #99e1d9;
 }
 
-#settingsMenu input {
+#settingsMenu #startNode {
 	width: 16vw;
 	height: 3vw;
 	margin: 1vw;
@@ -56,7 +56,7 @@ body {
 	color: #000000;
 	text-decoration: none;
 }
-#settingsMenu select {
+#settingsMenu #selectAlgorithm {
 	width: 16vw;
 	height: 3vw;
 	margin: 1vw;
@@ -70,7 +70,6 @@ body {
 	width: 8vw;
 	height: 3vw;
 	margin: 1vw;
-	margin-top:10vw;
 	padding-top: 1vw;
 	font-size: 1.5vw;
 	text-align: center;
@@ -78,4 +77,17 @@ body {
 	color: #ffffff;
 	text-decoration: none;
 	border: 0.5vw solid #649aeb;
+}
+
+label{
+	display: block;
+	color: #649aeb;
+	font-size: 1.5vw;
+}
+
+.cbx{
+	width: 1.5vw;
+	height: 1.5vw;
+	margin: 1vw;
+	text-decoration: none;
 }

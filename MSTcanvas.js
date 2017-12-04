@@ -1,5 +1,5 @@
 function MSTCanvas() {
- 
+
     /* 
         Inicijalizacija
     */
@@ -63,13 +63,20 @@ function MSTCanvas() {
         CRTANJE
     */
 
+    this.shouldDrawEdges = true;
+    this.shouldDrawIDs = true;
+    this.shouldDrawWeights = true;
+    this.shouldDrawResultEdges = true;
+
     // glavna f-ja za crtanje
     this.draw = function () {
         c.clearRect(0, 0, canvas.width, canvas.height);
         cNodesList = [];
         cEdgesList = [];
-        drawEdges();
-        drawResultEdges();
+        if (this.shouldDrawEdges == true) drawEdges();
+        if (this.shouldDrawResultEdges == true) drawResultEdges();
+        if (this.shouldDrawIDs == true) drawIDs();
+        /* wights go here */
         drawNodes();
         drawStartNode();
     }
@@ -86,7 +93,14 @@ function MSTCanvas() {
             c.fill();
             c.stroke();
             c.closePath();
+            cNodesList.push(Object.assign({}, c));
+        });
 
+    }
+
+    function drawIDs() {
+        that.nodeList.forEach(element => {
+            c.node = element;
             // kvadrat i text id
             c.beginPath();
             c.fillStyle = "yellow";
@@ -101,7 +115,6 @@ function MSTCanvas() {
             c.fill();
             c.stroke();
             c.closePath();
-
             cNodesList.push(Object.assign({}, c));
         });
 

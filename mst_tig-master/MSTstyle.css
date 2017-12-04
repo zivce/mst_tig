@@ -1,0 +1,81 @@
+html,
+body {
+	margin: 0 !important;
+	padding: 0 !important;
+	width: 100%;
+	height: 100%;
+}
+
+.canvas {
+	margin-top: 2%;
+	margin-left: 3%;
+	/* border: 1px solid black; */
+}
+
+#buttonSettings {
+	background-color: #334455;
+	width: 5vw;
+	height: 5vw;
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+}
+
+#buttonSettings img {
+	width: 50%;
+	margin: 25%;
+}
+
+#buttonSettings:hover {
+	background-color: #649aeb;
+}
+
+#settingsMenu {
+	background-color: #334455;
+	width: 20vw;
+	height: 40vw;
+	position: fixed;
+	bottom: 5vw;
+	right: -20vw;
+	-webkit-transition: 500ms;
+}
+
+#settingsMenu p {
+	font-size: 2vw;
+	text-align: center;
+	margin: 1vw;
+	color: #99e1d9;
+}
+
+#settingsMenu input {
+	width: 16vw;
+	height: 3vw;
+	margin: 1vw;
+	font-size: 1.5vw;
+	text-align: center;
+	color: #000000;
+	text-decoration: none;
+}
+#settingsMenu select {
+	width: 16vw;
+	height: 3vw;
+	margin: 1vw;
+	font-size: 1.5vw;
+	text-align: center;
+	color: #000000;
+	text-decoration: none;
+}
+
+#divRun{
+	width: 8vw;
+	height: 3vw;
+	margin: 1vw;
+	margin-top:10vw;
+	padding-top: 1vw;
+	font-size: 1.5vw;
+	text-align: center;
+	background-color: #334455;
+	color: #ffffff;
+	text-decoration: none;
+	border: 0.5vw solid #649aeb;
+}

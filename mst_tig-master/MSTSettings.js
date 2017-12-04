@@ -4,11 +4,6 @@ var divRun = document.getElementById('divRun');
 var inputStartNode = document.getElementById('startNode');
 var selectAlgorithm = document.getElementById('selectAlgorithm');
 
-var cbxEdges = document.getElementById('cbxEdges');
-var cbxResultEdges = document.getElementById('cbxResultEdges');
-var cbxWeights = document.getElementById('cbxWeights');
-var cbxIDs = document.getElementById('cbxIDs');
-
 
 buttonSettings.onclick = function () {
   if (settingsMenu.style.right == "-20vw") {
@@ -25,19 +20,6 @@ divRun.onclick = function () {
   myMST.setStartNode(inputStartNode.value);
   var graph = new MSTGraph(myNodes, myEdges);
   runAlgorithm(graph);
-
-  if (cbxEdges.checked == true) myMST.shouldDrawEdges = true;
-  else myMST.shouldDrawEdges = false;
-
-  if (cbxResultEdges.checked == true) myMST.shouldDrawResultEdges = true;
-  else myMST.shouldDrawResultEdges = false;
-
-  if (cbxWeights.checked == true) myMST.shouldDrawWeights = true;
-  else myMST.shouldDrawWeights = false;
-
-  if (cbxIDs.checked == true) myMST.shouldDrawIDs = true;
-  else myMST.shouldDrawIDs = false;
-
   myMST.addListOfReslutEdges(myResultEdges);
   myMST.draw();
 }
