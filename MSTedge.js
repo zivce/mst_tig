@@ -6,9 +6,8 @@ function MSTEdge(firstNode, secondNode, weight, id) {
     this.weight = weight;
     this.id = id;
 
-    this.setIdAndWeight = function(tmpId){
+    this.setIdAndWeight = function (tmpId) {
         this.id = tmpId;
         this.weight = tmpId;
     }
 }
-

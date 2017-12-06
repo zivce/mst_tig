@@ -515,26 +515,32 @@ var myResultEdges = [];
         n2.addAdjacentNodeTolist(n0);
         n0.addAdjacentNodeTolist(n2);
 
-        if ((myEdges.filter(function (element) { return element.firstNode == n1 && element.secondNode == n0;})).length == 0) {
+        if ((myEdges.filter(function (element) {
+                return element.firstNode == n1 && element.secondNode == n0;
+            })).length == 0) {
             myEdges.push(e0);
             n0.addEdgeToList(e0);
             n1.addEdgeToList(e0);
         }
 
-        if ((myEdges.filter(function (element) { return element.firstNode == n2 && element.secondNode == n1;})).length == 0) {
+        if ((myEdges.filter(function (element) {
+                return element.firstNode == n2 && element.secondNode == n1;
+            })).length == 0) {
             myEdges.push(e1);
             n1.addEdgeToList(e1);
             n2.addEdgeToList(e1);
         }
 
-        if ((myEdges.filter(function (element) { return element.firstNode == n0 && element.secondNode == n2;})).length == 0) {
+        if ((myEdges.filter(function (element) {
+                return element.firstNode == n0 && element.secondNode == n2;
+            })).length == 0) {
             myEdges.push(e2);
             n2.addEdgeToList(e2);
             n0.addEdgeToList(e2);
         }
     }
 
-    myEdges.forEach(function (tmpEdge,index) {
+    myEdges.forEach(function (tmpEdge, index) {
         tmpEdge.setIdAndWeight(index);
     });
 

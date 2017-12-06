@@ -13,7 +13,7 @@ function MSTGraph(pnode, pedge) {
   this.sortMethod = function (edge0, edge1) {
     return edge1.weight - edge0.weight;
   };
-  let kruskal,milos;
+  let kruskal, milos;
   kruskal = 0;
   milos = 0;
 
@@ -65,7 +65,7 @@ function MSTGraph(pnode, pedge) {
       {
         return edge.firstNode;
       }
-
+      
     })
     //console.log(neighborsArr);
     if (neighborsArr.length > 0)
@@ -81,8 +81,7 @@ function MSTGraph(pnode, pedge) {
    * *mst via reverse-delete*
    *  use of dfs
    *  working..
-  */
-  
+   */
   this.Milos = function () {
     that.EdgesOfMST.sort(that.sortMethod);
     //console.log(that.EdgesOfMST);
@@ -110,7 +109,7 @@ function MSTGraph(pnode, pedge) {
     console.log(this.EdgesOfMST);
 
     console.log("min weight of milos:")
-    this.EdgesOfMST.forEach((el)=>{
+    this.EdgesOfMST.forEach((el) => {
       milos += el.weight;
     })
 
@@ -139,76 +138,75 @@ function MSTGraph(pnode, pedge) {
     bb.push(CurrentEdge0);
 
     while (EdgeSets[0].length < this.NodeList.length - 1) {
-        var CurrentEdge = this.EdgesOfMST.pop();
-        var Node1 = CurrentEdge.firstNode;
-        var Node2 = CurrentEdge.secondNode;
-        var i1 = -1;
-        var i2 = -1;
-        var j1 = -1;
-        var j2 = -1;
+      var CurrentEdge = this.EdgesOfMST.pop();
+      var Node1 = CurrentEdge.firstNode;
+      var Node2 = CurrentEdge.secondNode;
+      var i1 = -1;
+      var i2 = -1;
+      var j1 = -1;
+      var j2 = -1;
 
-        for (index = 0; index < NodeSets.length; index++) {
+      for (index = 0; index < NodeSets.length; index++) {
 
-            var pom1 = NodeSets[index].indexOf(Node1);
-            var pom2 = NodeSets[index].indexOf(Node2);
+        var pom1 = NodeSets[index].indexOf(Node1);
+        var pom2 = NodeSets[index].indexOf(Node2);
 
-            if (pom1 > -1) {
-                i1 = pom1;
-                j1 = index;
-            }
-            if (pom2 > -1) {
-                i2 = pom2;
-                j2 = index;
-            }
+        if (pom1 > -1) {
+          i1 = pom1;
+          j1 = index;
         }
-        if ((j1 === -1) && (j2 === -1))
-        {
-            NodeSets.push(a = []);
-            a.push(Node1);
-            a.push(Node2);
-            EdgeSets.push(b = []);
-            b.push(CurrentEdge);
-            continue;
+        if (pom2 > -1) {
+          i2 = pom2;
+          j2 = index;
         }
-        if (((j1 > -1) && (j2 > -1)) && (j1 != j2)) {
-            var pom;
-            var len = NodeSets[j2].length;
-            for (var ind = 0; ind < len; ind++) {
-                pom = NodeSets[j2].pop();
-                NodeSets[j1].push(pom);
-            }
-            NodeSets.splice(j2, 1);
-            var Pe;
-            var len = EdgeSets[j2].length;
-            for (var ieg = 0; ieg < len; ieg++) {
-                Pe = EdgeSets[j2].pop();
-                EdgeSets[j1].push(Pe);
-            }
-            EdgeSets.splice(j2, 1);
-            EdgeSets[0].push(CurrentEdge);
-            continue;
+      }
+      if ((j1 === -1) && (j2 === -1)) {
+        NodeSets.push(a = []);
+        a.push(Node1);
+        a.push(Node2);
+        EdgeSets.push(b = []);
+        b.push(CurrentEdge);
+        continue;
+      }
+      if (((j1 > -1) && (j2 > -1)) && (j1 != j2)) {
+        var pom;
+        var len = NodeSets[j2].length;
+        for (var ind = 0; ind < len; ind++) {
+          pom = NodeSets[j2].pop();
+          NodeSets[j1].push(pom);
         }
-        if (j2 === j1) continue;
-        if ((j2 < 0) && (j1 > -1)) {
-            NodeSets[j1].push(Node2);
-            EdgeSets[j1].push(CurrentEdge);
-            continue;
+        NodeSets.splice(j2, 1);
+        var Pe;
+        var len = EdgeSets[j2].length;
+        for (var ieg = 0; ieg < len; ieg++) {
+          Pe = EdgeSets[j2].pop();
+          EdgeSets[j1].push(Pe);
         }
-        if ((j1 < 0) && (j2 > -1)) {
-            NodeSets[j2].push(Node1);
-            EdgeSets[j2].push(CurrentEdge);
-            continue;
-        }
+        EdgeSets.splice(j2, 1);
+        EdgeSets[0].push(CurrentEdge);
+        continue;
+      }
+      if (j2 === j1) continue;
+      if ((j2 < 0) && (j1 > -1)) {
+        NodeSets[j1].push(Node2);
+        EdgeSets[j1].push(CurrentEdge);
+        continue;
+      }
+      if ((j1 < 0) && (j2 > -1)) {
+        NodeSets[j2].push(Node1);
+        EdgeSets[j2].push(CurrentEdge);
+        continue;
+      }
     }
     KruskalEdges = EdgeSets[0].slice();
 
     console.log("min weight of kruskal:");
-    KruskalEdges.forEach((el)=>{
+    KruskalEdges.forEach((el) => {
       kruskal += el.weight;
     })
 
     console.log(kruskal);
 
     myResultEdges = KruskalEdges;
-}
+  }
 } //end_graf

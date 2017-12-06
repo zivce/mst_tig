@@ -79,6 +79,7 @@ function MSTCanvas() {
         /* wights go here */
         drawNodes();
         drawStartNode();
+        if (this.shouldDrawWeights == true) drawWeights();
     }
 
     // f-ja za crtanje, svih node-ova iz liste, na canvas-u
@@ -111,7 +112,7 @@ function MSTCanvas() {
             c.beginPath();
             c.fillStyle = "black";
             c.font = "40px Verdana";
-            c.fillText(c.node.id, c.node.x + 50, c.node.y + 50)
+            c.fillText(c.node.id, c.node.x + 50, c.node.y + 52)
             c.fill();
             c.stroke();
             c.closePath();
@@ -161,5 +162,27 @@ function MSTCanvas() {
         });
     }
 
+    function drawWeights() {
+        that.edgeList.forEach(function (element) {
+            c.weightEdge = element;
+            // kvadrat
+            c.midX = element.firstNode.x + (element.secondNode.x - element.firstNode.x) * 0.50;
+            c.midY = element.firstNode.y + (element.secondNode.y - element.firstNode.y) * 0.50;
+            c.beginPath();
+            c.fillStyle = "lightgrey";
+            c.fillRect(c.midX, c.midY, 80, 60);
+            c.stroke();
+            c.closePath();
+            // weights
+            c.beginPath();
+            c.fillStyle = "black";
+            c.font = "40px Verdana";
+            c.fillText(c.weightEdge.weight, c.midX + 2, c.midY + 45)
+            c.fill();
+            c.stroke();
+            c.closePath();
+            cNodesList.push(Object.assign({}, c));
+        });
+    }
 
 }
