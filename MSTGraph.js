@@ -13,6 +13,9 @@ function MSTGraph(pnode, pedge) {
   this.sortMethod = function (edge0, edge1) {
     return edge1.weight - edge0.weight;
   };
+  let kruskal,milos;
+  kruskal = 0;
+  milos = 0;
 
   /* resets nodes visited to false
    *  working reset
@@ -99,10 +102,21 @@ function MSTGraph(pnode, pedge) {
     //working
     console.log("min sp tree");
     console.log(this.EdgesOfMST);
+    
+    console.log("min weight of milos:")
+    this.EdgesOfMST.forEach((el)=>{
+      milos += el.weight;
+    })
+
+    console.log(milos);
+
     myResultEdges = this.EdgesOfMST;
+
   } //end mst
 
   this.Kruskal = function () {
+    that.EdgesOfMST.sort(that.sortMethod);
+
     var NodeSets = [];
     var EdgeSets = [];
     var KruskalEdges = [];
@@ -181,6 +195,14 @@ function MSTGraph(pnode, pedge) {
         }
     }
     KruskalEdges = EdgeSets[0].slice();
+
+    console.log("min weight of kruskal:");
+    KruskalEdges.forEach((el)=>{
+      kruskal += el.weight;
+    })
+
+    console.log(kruskal);
+
     myResultEdges = KruskalEdges;
 }
 } //end_graf

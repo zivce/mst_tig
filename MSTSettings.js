@@ -37,7 +37,8 @@ divRun.onclick = function () {
 
   if (cbxIDs.checked == true) myMST.shouldDrawIDs = true;
   else myMST.shouldDrawIDs = false;
-
+  
+  console.log(myResultEdges);
   myMST.addListOfReslutEdges(myResultEdges);
   myMST.draw();
 }
