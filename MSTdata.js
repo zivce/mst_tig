@@ -270,8 +270,7 @@ var myIndex = [
     38,
     17
 ]
-var myRawNodes = [
-    {
+var myRawNodes = [{
         "x": 2153.822008603159,
         "y": 433.80571613719906
     },
@@ -495,7 +494,6 @@ var myResultEdges = [];
 
 /* kreiranje potega*/
 (function () {
-     var edgeId = 0;
     for (var i = 0; i < myIndex.length; i += 3) {
         var i0 = myIndex[i];
         var i1 = myIndex[i + 1];
@@ -505,30 +503,44 @@ var myResultEdges = [];
         var n1 = myNodes[i1];
         var n2 = myNodes[i2];
 
-        var e0 = new MSTEdge(n0, n1, edgeId,  edgeId++  );
+        var e0 = new MSTEdge(n0, n1, 0, 0);
         n0.addAdjacentNodeTolist(n1);
         n1.addAdjacentNodeTolist(n0);
-        n0.addEdgeToList(e0);
-        n1.addEdgeToList(e0);
 
-        var e1 = new MSTEdge(n1, n2, edgeId,  edgeId++  );
+        var e1 = new MSTEdge(n1, n2, 0, 0);
         n1.addAdjacentNodeTolist(n2);
         n2.addAdjacentNodeTolist(n1);
-        n1.addEdgeToList(e1);
-        n2.addEdgeToList(e1);
 
-        var e2 = new MSTEdge(n2, n0, edgeId,  edgeId++  );
+        var e2 = new MSTEdge(n2, n0, 0, 0);
         n2.addAdjacentNodeTolist(n0);
         n0.addAdjacentNodeTolist(n2);
-        n2.addEdgeToList(e2);
-        n0.addEdgeToList(e2);
 
-        myEdges.push(e0);
-        myEdges.push(e1);
-        myEdges.push(e2);
+        if ((myEdges.filter(function (element) { return element.firstNode == n1 && element.secondNode == n0;})).length == 0) {
+            myEdges.push(e0);
+            n0.addEdgeToList(e0);
+            n1.addEdgeToList(e0);
+        }
+
+        if ((myEdges.filter(function (element) { return element.firstNode == n2 && element.secondNode == n1;})).length == 0) {
+            myEdges.push(e1);
+            n1.addEdgeToList(e1);
+            n2.addEdgeToList(e1);
+        }
+
+        if ((myEdges.filter(function (element) { return element.firstNode == n0 && element.secondNode == n2;})).length == 0) {
+            myEdges.push(e2);
+            n2.addEdgeToList(e2);
+            n0.addEdgeToList(e2);
+        }
     }
 
-    myNodes.forEach(function(tmpNode) {
+    myEdges.forEach(function (tmpEdge,index) {
+        tmpEdge.setIdAndWeight(index);
+    });
+
+    myNodes.forEach(function (tmpNode) {
         tmpNode.removeDuplicates();
     });
+    console.log(myNodes);
+    console.log(myEdges);
 })();
