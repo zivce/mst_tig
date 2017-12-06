@@ -8,7 +8,6 @@ function MSTGraph(pnode, pedge) {
 
   this.oldEdges = this.EdgesOfMST.slice();
 
-  //console.log(this.oldEdges);
   //za sortiranje po opadajucem kriterijumu
   this.sortMethod = function (edge0, edge1) {
     return edge1.weight - edge0.weight;
@@ -44,10 +43,15 @@ function MSTGraph(pnode, pedge) {
     return p;
   }
 
+
+
+
+
   /* depth first search
    * @param {integer} id id of node
    * working dfs
    */
+
   this.count = 0;
   this.dfs = function (id) {
     let workingNode = that.NodeList[id];
@@ -61,6 +65,8 @@ function MSTGraph(pnode, pedge) {
       if (edge.firstNode === workingNode) {
         return edge.secondNode;
       }
+      if(edge.secondNode === workingNode)
+        return edge.firstNode;
     })
     //console.log(neighborsArr);
     if (neighborsArr.length > 0)
@@ -68,9 +74,14 @@ function MSTGraph(pnode, pedge) {
         if (typeof neighborsArr[i] !== "undefined")
           this.dfs(neighborsArr[i].id);
       }
-
   }
 
+
+  /*
+  * Code for connected components
+  * to check if graph is connected
+  *
+  */
 
   /*
    * *mst via reverse-delete*
@@ -102,7 +113,7 @@ function MSTGraph(pnode, pedge) {
     //working
     console.log("min sp tree");
     console.log(this.EdgesOfMST);
-    
+
     console.log("min weight of milos:")
     this.EdgesOfMST.forEach((el)=>{
       milos += el.weight;
