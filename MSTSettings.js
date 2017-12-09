@@ -37,13 +37,15 @@ divRun.onclick = function () {
 
   if (cbxIDs.checked == true) myMST.shouldDrawIDs = true;
   else myMST.shouldDrawIDs = false;
-  
+
   console.log(myResultEdges);
   myMST.addListOfReslutEdges(myResultEdges);
   myMST.draw();
 }
 
 function runAlgorithm(graph) {
+  let b,a;
+
   switch (selectAlgorithm.selectedIndex) {
     case 0:
       myResultEdges = [];
@@ -52,7 +54,7 @@ function runAlgorithm(graph) {
       myResultEdges = [];
       break;
     case 2:
-      myResultEdges = [];
+      graph.findST();
       break;
     case 3:
       myResultEdges = [];
@@ -61,10 +63,16 @@ function runAlgorithm(graph) {
       myResultEdges = [];
       break;
     case 5:
+      b = performance.now();
       graph.Kruskal();
+      a = performance.now();
+      console.log("it took kruskal: " + (a-b) +" ms");
       break;
     case 6:
+    b = performance.now();
       graph.Milos();
+      a = performance.now();
+      console.log("it took revdel: " + (a-b) +" ms");
       break;
   }
 

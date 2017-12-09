@@ -1,149 +1,158 @@
 
-var Point = function(x,y){
+let Point = function(x,y){
     this.x = x || 0;
     this.y = y || 0;
 };
 
-var Circle = function(x,y,radius){
+let Circle = function(x,y,radius){
     this.x = x || 0;
     this.y = y || 0;
     this.radius = radius || 0;
 };
 
-/* DELAUNAY TRIANGULATION
+/* DELAUNAY
 
-    algorithm:
 
-    goal :  with a set of points, find a set of triangles
-            where no triangle's circumcircle contains any point of the point set.
+    cilj :  za dati skup tacaka, naci skup trouglova
+    tako da svaki opisani krug oko trouglova ne sadrzi
+    nijednu tacku iz skupa tacaka
 
-    steps:
-        1. build a super triangle that encloses all points
-            add super triangle to solution
-        2. for all the points of the set
-            if any of the circumcircles of the triangles of the solution contain the point
-                remove the triangles from solution
-                use their edges to build X new triangles with the point
-        3. remove the super triangle points and indices from solution
-        4. have a cigar
+    algoritam:
+        1. dodati super trougao koji sadrzi sve tacke
+            u resenje
+        2. za sve tacke u skupu
+            Ako bilo koji od opisanih krugova trouglova iz resenja sadrzi tacku
+                obrisi trougao iz resenja
+                koristiti njegove grane da se naprave novi trouglovi sa tom tackom
+        3. izbrisati super trougao iz resenja
+
 
  */
 
-var Delaunay = function( exports ){
+let Delaunay = function( exports ){
 
-    var EPSILON = 0.00001;
-    var SUPER_TRIANGLE_RADIUS = 1000000;
+    let EPSILON = 0.00001;
+    let SUPER_TRIANGLE_RADIUS = 1000000;
 
-    var indices;
-    var circles;
+    let indices;
+    let circles;
 
-    //computes the Delaunay triangulation of a point set
+    //racuna triangulaciju
     exports.compute = function( points, cleanup ){
 
-        //early bail out:
-        //if there's less than 3 points, there's no solution
-        var nv = points.length;
+
+        //manje od tri tacke..
+        let nv = points.length;
         if (nv < 3) return null;
 
-        //if there's exactly 3 points, there's only one solution
+        //tacno tri tacke
         if (nv === 3) return [0,1,2];
 
-        //otherwise, creates a super triangle
-        var d = SUPER_TRIANGLE_RADIUS;
+        //kreiranje super trougla
+        let d = SUPER_TRIANGLE_RADIUS;
 
-        //adds the super triangle's points to the point set
-        var p0 = new Point( 0, -d );
-        var p1 = new Point( d, d );
-        var p2 = new Point( -d, d );
+        //dodavanje tacaka super trougla
+        let p0 = new Point( 0, -d );
+        let p1 = new Point( d, d );
+        let p2 = new Point( -d, d );
 
         points.push( p0 );
         points.push( p1 );
         points.push( p2 );
 
-        //stores the super triangle's indices as part of the solution
+        //indeksi tacaka super trougla se cuvaju
         indices = [];
         indices.push( points.length - 3 );
         indices.push( points.length - 2 );
         indices.push( points.length - 1 );
 
-        //stores the circumcircle of the super triangle
+        //cuva opisane krugove
         circles = [];
         circles.push( computeCircumcircle( p0, p1, p2 ) );
 
-        //temp vars
-        var currentIndex, j, k, id0, id1, id2;
-        //for each point of the set ( not considering the points of the super triangle)
+        //tmpIndices
+        let currentIndex, j, k, id0, id1, id2;
+        //za svaku tacku u skupu tacaka (bez tacaka super trougla)
         for ( currentIndex = 0; currentIndex < nv; currentIndex++ ){
 
 
-            // check all the triangles we created so far
-            // to see if the current point is contained
-            // by any of the circumcircles of the existing triangles
-            var currentPoint = points[ currentIndex ];
+            // proveri trouglove koji su kreirani do sad
+            // i provera da li je trenutna tacka sadrzana
+            // u bilo kom krugu postojecih trouglova
+            let currentPoint = points[ currentIndex ];
 
-            // if an existing triangle contains the point,
-            // we'll store the triangle's indices int his array
-            // it will later be use dto rebuild new triangles
-            var tmpIndices = [];
+            // ako neki postojeci trougao vec sadrzi tacku
+            // koristimo indekse trougla kasnije za pravljenje novih trouglova
+            let tmpIndices = [];
 
             j = 0;
             while( j < indices.length ){
 
-                //retrieve the circle corresponding to this triangle
-                var circleId = ~~( j / 3 );
+                //indeks trougla smestamo u circleId
+                //~~ floor bitwise
+                let circleId = ~~( j / 3 );
 
-                //if the circle is big enough
+                //ako je trougao dovoljno veliki
                 if( circles[ circleId ].radius > EPSILON
 
-                    //and if the circumcircle contains the current Point
+                    //i ako trougao sadrzi tacku
                     &&  circleContains( circles[ circleId ], currentPoint )	){
 
                     id0 = indices[ j ];
                     id1 = indices[ j + 1 ];
                     id2 = indices[ j + 2 ];
 
-                    //stores the 3 sides of the invalid triangle
+                    //sacuvamo stranice trougla
+
                     // A-B
                     tmpIndices.push( id0 );
                     tmpIndices.push( id1 );
+
                     // B-C
                     tmpIndices.push( id1 );
                     tmpIndices.push( id2 );
+
                     // C-A
                     tmpIndices.push( id2 );
                     tmpIndices.push( id0 );
 
-                    // and remove it from the valid triangles' list
+                    // i izbrisemo iz validnih trouglova
                     indices.splice( j, 3 );
 
-                    // also remove the circle corresponding to this triangle
+                    // obrisemo i krug koji odgoleta trouglu
                     circles.splice( circleId, 1 );
 
-                    // and decrement the iterator as we reduced
-                    // the length of the indices' array
+                    // smanjimo iterator zbog izbacenog trougla
                     j -= 3;
-                }
+                }//end if za nevalidne trouglove
                 j += 3;
-            }
+            }//end while
 
-            //remove duplicate edges to prevent infinite loops:
-            //for each edge, check if they use the same nodes (points)
-            // (there's probably a better way to do that)
+            //izbrisati duple stranice da bi se sprecile beskonacne petlje
+            //za svaku stranicu provera da li koriste iste tack
+            //( A-B, B-C, C-A )
 
-            //the '2' below corresponds to how we stored edges above ( A-B, B-C, C-A )
+            //2 while za svaku granu obidje sve grane da proveri da li postoje
+            //duplikati
             j = 0;
+
             while ( j < tmpIndices.length ){
 
+
                 k = ( j + 2 );
+
                 while ( k < tmpIndices.length ){
 
                     if(	(	tmpIndices[ j ] === tmpIndices[ k ] && tmpIndices[ j + 1 ] === tmpIndices[ k + 1 ]	)
                     ||	(	tmpIndices[ j + 1 ] === tmpIndices[ k ] && tmpIndices[ j ] === tmpIndices[ k + 1 ]	)	){
 
+                        //brisemo dve grane
                         tmpIndices.splice( k, 2 );
                         tmpIndices.splice( j, 2 );
+
                         j -= 2;
                         k -= 2;
+
                         if ( j < 0 || j > tmpIndices.length - 1 ) break;
                         if ( k < 0 || k > tmpIndices.length - 1 ) break;
                     }
@@ -152,27 +161,28 @@ var Delaunay = function( exports ){
                 j += 2;
             }
 
-            // finally, for all the valid indices pairs left in tmpIndices
-            // we create new triangles and compute their associated circumcirle
+            // za sve validne parove indeksa kreiramo trouglove
+            // i racunamo opisane krugove
+
             j = 0;
             while( j < tmpIndices.length ){
 
-                // add the current point to solution
+                //dodaje trenutnu tacku u resenje
                 indices.push( currentIndex );
 
-                // add the indices of the edge stored in tmpIndices to the solution
-                var tmpId0 = tmpIndices[ j ];
-                var tmpId1 = tmpIndices[ j + 1 ];
+                //dodaje index stranice iz tmpIndices u resenje
+                let tmpId0 = tmpIndices[ j ];
+                let tmpId1 = tmpIndices[ j + 1 ];
 
                 indices.push( tmpId0 );
                 indices.push( tmpId1 );
 
-                // retrieves the points of the edges
+                // uzima tacke na osnovu stranice
                 p1 = points[ tmpId0 ];
                 p2 = points[ tmpId1 ];
 
-                //and compute the circumcircle from the 3 points
-                var circle = computeCircumcircle( currentPoint, p1, p2 );
+                //racunamo opisan krug na osnovu 3 tacke
+                let circle = computeCircumcircle( currentPoint, p1, p2 );
                 circles.push( circle );
                 j += 2;
 
@@ -180,130 +190,139 @@ var Delaunay = function( exports ){
 
         }
 
-        //clean up :
-        // remove all triangles that use one of the points of the super triangle
+
+        // brise sve trouglove koji sadrze neku tacku super trougla
         if( Boolean( cleanup ) === true ){
 
-            //super triangle points' ids
+            //id-evi super trougla
             id0 = points.length - 3;
             id1 = points.length - 2;
             id2 = points.length - 1;
 
-            //if any of the indices of the solution's triangles
-            //belongs to the super triangle, delete it
+            //ako neki id od trouglova iz resenja
+            //pripada super trouglu => brisemo ga
+
             currentIndex = 0;
+
             while( currentIndex < indices.length ){
 
-                var tri_0 = indices[ currentIndex ];
-                var tri_1 = indices[ currentIndex + 1 ];
-                var tri_2 = indices[ currentIndex + 2 ];
+                let tri_0 = indices[ currentIndex ];
+                let tri_1 = indices[ currentIndex + 1 ];
+                let tri_2 = indices[ currentIndex + 2 ];
 
                 if( tri_0 === id0 || tri_0 === id1 || tri_0 === id2
                 ||	tri_1 === id0 || tri_1 === id1 || tri_1 === id2
                 ||	tri_2 === id0 || tri_2 === id1 || tri_2 === id2 ){
+
                     indices.splice( currentIndex, 3 );
                     circles.splice( currentIndex/3, 1 );
-                    if( currentIndex > 0 ) currentIndex-=3;
+
+                    if( currentIndex > 0 )
+                      currentIndex-=3;
+
                     continue;
                 }
+
                 currentIndex += 3;
             }
 
-            //removes the points we added to the points set to create the super triangle
+            //obrisemo super trougao iz resenja
             points.pop();
             points.pop();
             points.pop();
 
         }
-        //TADA !
-        exports.circles = circles;//for debug only
-        //have a cigar.
+        //dodajemo u object exports krugove
+        exports.circles = circles;
+
+        //indeksi koji se koriste za crtanje trouglova
         return indices;
 
-    };
+    };//end compute
 
     /**
-     * checks if a circle contains a point
-     * @param c the circle
-     * @param p the point
-     * @returns {Boolean} true if the cirrcle contains the point
+     * provera da li krug sadrzi tacku
+     * @param c krug
+     * @param p tacka
+     * @returns {Boolean} tacno ako krug sadrzi tacku
      */
     function circleContains( c, p ){
-        var dx = c.x - p.x;
-        var dy = c.y - p.y;
+        let dx = c.x - p.x;
+        let dy = c.y - p.y;
         return c.radius > dx * dx + dy * dy;
     }
 
     /**
-     * computes the circumcircle of a triangle
+     * racuna opisani krug
      * @param p0
      * @param p1
      * @param p2
-     * @returns {Circle} the circumcircle of the triangle described by the 3 points
+     * @returns {Circle} krug opisan oko tri tacke
      */
     function computeCircumcircle( p0, p1, p2 ){
 
-        var A = p1.x - p0.x;
-        var B = p1.y - p0.y;
-        var C = p2.x - p0.x;
-        var D = p2.y - p0.y;
+        let A = p1.x - p0.x;
+        let B = p1.y - p0.y;
+        let C = p2.x - p0.x;
+        let D = p2.y - p0.y;
 
-        var E = A * (p0.x + p1.x) + B * (p0.y + p1.y);
-        var F = C * (p0.x + p2.x) + D * (p0.y + p2.y);
-        var G = 2.0 * (A * (p2.y - p1.y) - B * (p2.x - p1.x));
+        let E = A * (p0.x + p1.x) + B * (p0.y + p1.y);
+        let F = C * (p0.x + p2.x) + D * (p0.y + p2.y);
+        let G = 2.0 * (A * (p2.y - p1.y) - B * (p2.x - p1.x));
 
-        var x = (D * E - B * F) / G;
-        var y = (A * F - C * E) / G;
+        let x = (D * E - B * F) / G;
+        let y = (A * F - C * E) / G;
 
-        var dx = x - p0.x;
-        var dy = y - p0.y;
-        var radius = dx * dx + dy * dy;
+        let dx = x - p0.x;
+        let dy = y - p0.y;
+        let radius = dx * dx + dy * dy;
 
         return new Circle( x, y, radius );
     }
     return exports;
+
 }({});
-
+//IIFE prosledjen prazan obj vraca exports;
 
 /////////////////////////////////////////////////////////////////////
-
-// TEST
-
 /////////////////////////////////////////////////////////////////////
 
 
-var w = 5000;//window.innerWidth;
-var h = 2800;//window.innerHeight;
-var canvas = document.createElement("canvas");
+let w = 5000;
+let h = 2800;
+
+let canvas = document.createElement("canvas");
 canvas.width = w;
 canvas.height = h;
 document.body.appendChild( canvas );
-var ctx = canvas.getContext("2d");
+let ctx = canvas.getContext("2d");
 
-var points = [];
-for( var i = 0; i < 50; i++ ){
-    var p = new Point( Math.random() * w, Math.random() * h );
+//random generisanje tacaka
+
+let points = [];
+for( let i = 0; i < 50; i++ ){
+    let p = new Point( Math.random() * w, Math.random() * h );
     points.push( p );
 }
 
-//computes the triangles' indices' triplets from a point set
-//true removes the super triangle / false leaves it in the result.
-var result = Delaunay.compute( points, true );
+//racuna indekse trouglova (uredjeni par trojki) iz skupa tacaka
+//true ocisti super trougao iz resenja
+let result = Delaunay.compute( points, true );
 
 ctx.globalAlpha = 1;
 ctx.beginPath();
 
-var objForExport = {};
+let objForExport = {};
 
 for( i = 0; i < result.length; i+= 3 ){
 
-    var i0 = result[i];
-    var i1 = result[i+1];
-    var i2 = result[i+2];
+    let i0 = result[i];
+    let i1 = result[i+1];
+    let i2 = result[i+2];
 
-    var p0 = points[ i0 ];
-    var p1 = points[ i1 ];
-    var p2 = points[ i2 ];
+    let p0 = points[ i0 ];
+    let p1 = points[ i1 ];
+    let p2 = points[ i2 ];
 
 
     ctx.moveTo(p0.x, p0.y);
@@ -318,13 +337,17 @@ for( i = 0; i < result.length; i+= 3 ){
 }
 ctx.stroke();
 
-//debug : shows the circumcircle
+//za crtanje krugova
 ctx.globalAlpha = .1;
+
 Delaunay.circles.forEach(function(c){
     ctx.beginPath();
     ctx.arc( c.x, c.y, Math.sqrt( c.radius ), 0., Math.PI * 2 );
     ctx.stroke();
 });
+
+//funkcija save cuva u .json indekse(uredjeni par trojki)
+// i tacke (x,y)
 
 (function(console){
     console.save = function(data, filename){
@@ -339,14 +362,14 @@ Delaunay.circles.forEach(function(c){
         }
 
 
-        var blob = new Blob([data], {type: 'text/json'}),
+        let blob = new Blob([data], {type: 'text/json'}),
             e    = document.createEvent('MouseEvents'),
             a    = document.createElement('a')
 
         a.download = filename
         a.href = window.URL.createObjectURL(blob)
         a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':')
-        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+        e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
         a.dispatchEvent(e)
     }
 })(console)

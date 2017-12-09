@@ -13,9 +13,9 @@ function MSTGraph(pnode, pedge) {
   this.sortMethod = function (edge0, edge1) {
     return edge1.weight - edge0.weight;
   };
-  let kruskal, milos;
+  let kruskal, revdel;
   kruskal = 0;
-  milos = 0;
+  revdel = 0;
 
   /* resets nodes visited to false
    *  working reset
@@ -65,7 +65,7 @@ function MSTGraph(pnode, pedge) {
       {
         return edge.firstNode;
       }
-      
+
     })
     //console.log(neighborsArr);
     if (neighborsArr.length > 0)
@@ -76,6 +76,58 @@ function MSTGraph(pnode, pedge) {
 
   }
 
+  this.spanningTree = [];
+
+  /*  dfsutil to find
+  *   spanning tree in this graph
+  *   @param {integer} id id of node
+  *   return myResultEdges contains edges
+  *   of spanning tree
+  */
+  this.dfsutil = function (id) {
+    let workingNode = that.NodeList[id];
+
+    console.log(id);
+    //ako je posecen ne gledaju se njegovi susedi
+    if (!workingNode.visited)
+      workingNode.visited = true;
+    else
+      return;
+
+
+    let neighborsArr = this.EdgesOfMST.map((edge) => {
+
+      if (edge.firstNode === workingNode && !edge.secondNode.visited) {
+        this.spanningTree.push(edge);
+        return edge.secondNode;
+      }
+      if(edge.secondNode === workingNode && !edge.firstNode.visited)
+      {
+        //this.spanningTree.push(edge);
+        return edge.firstNode;
+      }
+      console.log(neighborsArr);
+      
+    })
+
+      for (let i = 0; i < neighborsArr.length; i++) {
+        if (typeof neighborsArr[i] !== "undefined")
+          this.dfsutil(neighborsArr[i].id);
+      }
+
+  }
+
+
+  /*
+  *   Facade to call dfsutil
+  */
+
+  this.findST = function(){
+    //ovde da se ubaci startni cvor
+    that.dfsutil(2);
+    console.log(this.spanningTree);
+    myResultEdges = this.spanningTree;
+  }
 
   /*
    * *mst via reverse-delete*
@@ -110,10 +162,10 @@ function MSTGraph(pnode, pedge) {
 
     console.log("min weight of milos:")
     this.EdgesOfMST.forEach((el) => {
-      milos += el.weight;
+      revdel += el.weight;
     })
 
-    console.log(milos);
+    console.log(revdel);
 
     myResultEdges = this.EdgesOfMST;
 
