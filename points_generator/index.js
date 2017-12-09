@@ -260,25 +260,35 @@ let Delaunay = function( exports ){
      * @returns {Circle} krug opisan oko tri tacke
      */
     function computeCircumcircle( p0, p1, p2 ){
+        //https://en.wikipedia.org/wiki/Circumscribed_circle#Cartesian_coordinates_2
 
-        let A = p1.x - p0.x;
-        let B = p1.y - p0.y;
-        let C = p2.x - p0.x;
-        let D = p2.y - p0.y;
+        let A = p1.x - p0.x;//Bx-Ax
+        let B = p1.y - p0.y;//By-Ay
 
-        let E = A * (p0.x + p1.x) + B * (p0.y + p1.y);
-        let F = C * (p0.x + p2.x) + D * (p0.y + p2.y);
+        let C = p2.x - p0.x;//Cx-Ax
+        let D = p2.y - p0.y;//Cy-Ay
+
+        let E = A * (p0.x + p1.x) + B * (p0.y + p1.y);//Bx²-Ax² + By²-Ay²
+        let F = C * (p0.x + p2.x) + D * (p0.y + p2.y);//Cx²-Ax² + Cy²-Ay²
+
+        //D.jpg
         let G = 2.0 * (A * (p2.y - p1.y) - B * (p2.x - p1.x));
 
+        //calcXY.jpg
         let x = (D * E - B * F) / G;
         let y = (A * F - C * E) / G;
 
         let dx = x - p0.x;
         let dy = y - p0.y;
+
         let radius = dx * dx + dy * dy;
 
+
         return new Circle( x, y, radius );
+
     }
+
+
     return exports;
 
 }({});
