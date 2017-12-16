@@ -6,12 +6,8 @@ function MSTEdge(firstNode, secondNode, weight, id) {
     this.weight = weight;
     this.id = id;
 
-    function getRandomInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
     this.setIdAndWeight = function (tmpId) {
         this.id = tmpId;
-        this.weight = getRandomInt(1,100);
+        this.weight = tmpId;
     }
 }

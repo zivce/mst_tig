@@ -1,13 +1,13 @@
 
 let Point = function(x,y){
-    this.x = x || 0;
-    this.y = y || 0;
+    this.x = x;
+    this.y = y;
 };
 
 let Circle = function(x,y,radius){
-    this.x = x || 0;
-    this.y = y || 0;
-    this.radius = radius || 0;
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
 };
 
 /* DELAUNAY
@@ -20,10 +20,11 @@ let Circle = function(x,y,radius){
     algoritam:
         1. dodati super trougao koji sadrzi sve tacke
             u resenje
-        2. za sve tacke u skupu
+        2. za sve tacke u skupu(bez supertrougla)
             Ako bilo koji od opisanih krugova trouglova iz resenja sadrzi tacku
                 obrisi trougao iz resenja
                 koristiti njegove grane da se naprave novi trouglovi sa tom tackom
+
         3. izbrisati super trougao iz resenja
 
 
@@ -67,6 +68,7 @@ let Delaunay = function( exports ){
         indices.push( points.length - 1 );
 
         //cuva opisane krugove
+        //inicijalno krug opisan oko super trougla
         circles = [];
         circles.push( computeCircumcircle( p0, p1, p2 ) );
 
@@ -119,7 +121,7 @@ let Delaunay = function( exports ){
                     // i izbrisemo iz validnih trouglova
                     indices.splice( j, 3 );
 
-                    // obrisemo i krug koji odgoleta trouglu
+                    // obrisemo i krug koji odgovara  trouglu
                     circles.splice( circleId, 1 );
 
                     // smanjimo iterator zbog izbacenog trougla
@@ -132,8 +134,9 @@ let Delaunay = function( exports ){
             //za svaku stranicu provera da li koriste iste tack
             //( A-B, B-C, C-A )
 
-            //2 while za svaku granu obidje sve grane da proveri da li postoje
-            //duplikati
+            //2 while za svaku granu obidje sve grane da proveri
+            //da li postoje duplikati
+
             j = 0;
 
             while ( j < tmpIndices.length ){
@@ -146,18 +149,19 @@ let Delaunay = function( exports ){
                     if(	(	tmpIndices[ j ] === tmpIndices[ k ] && tmpIndices[ j + 1 ] === tmpIndices[ k + 1 ]	)
                     ||	(	tmpIndices[ j + 1 ] === tmpIndices[ k ] && tmpIndices[ j ] === tmpIndices[ k + 1 ]	)	){
 
-                        //brisemo dve grane
+                        //brisemo dve grane*
                         tmpIndices.splice( k, 2 );
+
                         tmpIndices.splice( j, 2 );
+                        //*
 
                         j -= 2;
                         k -= 2;
 
-                        if ( j < 0 || j > tmpIndices.length - 1 ) break;
-                        if ( k < 0 || k > tmpIndices.length - 1 ) break;
                     }
                     k += 2;
                 }
+
                 j += 2;
             }
 
@@ -188,11 +192,11 @@ let Delaunay = function( exports ){
 
             }
 
-        }
+        }//za svaku tacku u points end
 
 
         // brise sve trouglove koji sadrze neku tacku super trougla
-        if( Boolean( cleanup ) === true ){
+        if( cleanup  === true ){
 
             //id-evi super trougla
             id0 = points.length - 3;
@@ -245,10 +249,12 @@ let Delaunay = function( exports ){
      * @param c krug
      * @param p tacka
      * @returns {Boolean} tacno ako krug sadrzi tacku
+     * https://math.stackexchange.com/questions/198764/how-to-know-if-a-point-is-inside-a-circle#answer-198769
      */
     function circleContains( c, p ){
         let dx = c.x - p.x;
         let dy = c.y - p.y;
+
         return c.radius > dx * dx + dy * dy;
     }
 
@@ -386,4 +392,4 @@ Delaunay.circles.forEach(function(c){
 
 console.log(objForExport);
 
-console.save(objForExport,"indicesPlusPoints.json");
+//console.save(objForExport,"indicesPlusPoints.json");

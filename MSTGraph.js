@@ -76,65 +76,13 @@ function MSTGraph(pnode, pedge) {
 
   }
 
-  this.spanningTree = [];
-
-  /*  dfsutil to find
-  *   spanning tree in this graph
-  *   @param {integer} id id of node
-  *   return myResultEdges contains edges
-  *   of spanning tree
-  */
-  this.dfsutil = function (id) {
-    let workingNode = that.NodeList[id];
-
-    console.log(id);
-    //ako je posecen ne gledaju se njegovi susedi
-    if (!workingNode.visited)
-      workingNode.visited = true;
-    else
-      return;
-
-
-    let neighborsArr = this.EdgesOfMST.map((edge) => {
-
-      if (edge.firstNode === workingNode && !edge.secondNode.visited) {
-        this.spanningTree.push(edge);
-        return edge.secondNode;
-      }
-      if(edge.secondNode === workingNode && !edge.firstNode.visited)
-      {
-        //this.spanningTree.push(edge);
-        return edge.firstNode;
-      }
-      console.log(neighborsArr);
-      
-    })
-
-      for (let i = 0; i < neighborsArr.length; i++) {
-        if (typeof neighborsArr[i] !== "undefined")
-          this.dfsutil(neighborsArr[i].id);
-      }
-
-  }
-
-
-  /*
-  *   Facade to call dfsutil
-  */
-
-  this.findST = function(){
-    //ovde da se ubaci startni cvor
-    that.dfsutil(2);
-    console.log(this.spanningTree);
-    myResultEdges = this.spanningTree;
-  }
 
   /*
    * *mst via reverse-delete*
    *  use of dfs
    *  working..
    */
-  this.Milos = function () {
+  this.reversedelete = function () {
     that.EdgesOfMST.sort(that.sortMethod);
     //console.log(that.EdgesOfMST);
     let i = 0;
@@ -160,7 +108,8 @@ function MSTGraph(pnode, pedge) {
     console.log("min sp tree");
     console.log(this.EdgesOfMST);
 
-    console.log("min weight of milos:")
+    console.log("min weight of revdel:")
+
     this.EdgesOfMST.forEach((el) => {
       revdel += el.weight;
     })
