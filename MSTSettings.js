@@ -49,10 +49,10 @@ function runAlgorithm(graph) {
       myResultEdges = [];
       break;
     case 1:
-      myResultEdges = [];
+      myResultEdges = graph.bfsSt(Number(inputStartNode.value));
       break;
     case 2:
-      myResultEdges = graph.dfsSt(Number(inputStartNode.value));
+      myResultEdges = [];
       break;
     case 3:
       myResultEdges = [];

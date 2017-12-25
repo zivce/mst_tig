@@ -77,14 +77,14 @@ function MSTGraph(pnode, pedge) {
   }
 
   /**
-   * Dfs to run st operation
-   * dfsSt(start)
+   * Bfs to run st operation
+   * bfsSt(start)
    * to each node
    * @param {id of node} start of starting node
    * @returns {MSTEdge[]} from startNode
    */
 
-   this.dfsSt = function(start)
+   this.bfsSt = function(start)
    {
      let arrOfPaths = [];
      console.log(start);
@@ -94,7 +94,7 @@ function MSTGraph(pnode, pedge) {
          if(node.id === start)
            return;
 
-         arrOfPaths.push(that.dfsUtilSt(start, node.id));
+         arrOfPaths.push(that.bfsUtilSt(start, node.id));
 
        }
      )
@@ -110,35 +110,30 @@ function MSTGraph(pnode, pedge) {
        edgeArr.forEach((edge)=>{
          if(pathsRet.indexOf(edge) === -1)
          {
-           debugger;
+           //debugger;
            pathsRet.push(edge);
          }
        })
       })
 
-      debugger;
+      //debugger;
       return pathsRet;
 
    }
 
   /**
-   *  Work on dfs for spanning tree...
+   *  Work on bfs for spanning tree...
    *
-   *  dfsUtilSt(root,goal)
-   *  @param {id of node} root starting node
-   *  @param {id of node} goal goal nodes
+   *  bfsUtilSt(root,goal)
+   *  @param {integer} root starting node
+   *  @param {integer} goal goal nodes
    *  @returns {MSTEdge[]} path from root to goal
    *  used for getting all paths
    *  from root to all nodes ..
    */
 
-   this.dfsUtilSt = function(root,goal)
+   this.bfsUtilSt = function(root,goal)
    {
-     //nabavi cvorove od id-eva
-
-     //let rootNode = that.NodeList[Number(root)];
-     //let goalNode = that.NodeList[Number(goal)];
-
      let openList = [];
      let closedSet = {};
      //nodesSeen = 1; later use proly
@@ -153,7 +148,9 @@ function MSTGraph(pnode, pedge) {
 
      while(!done)
      {
-       curr = openList.pop();
+       curr = openList.shift();
+       //skida prvi element
+       //curr = openList.pop(); dfs..
        closedSet[curr] = true;
 
        if(curr === goal)
@@ -181,6 +178,7 @@ function MSTGraph(pnode, pedge) {
          //nodesSeen++;
        })
 
+
        openList = openList.concat(adjInterior);
 
 
@@ -189,7 +187,7 @@ function MSTGraph(pnode, pedge) {
 
 
 
-   /**
+   /*
     * differentPath(MSTEdge[],MSTEdge[])
     * @param {MSTEdge[]} p1 path1
     * @param {MSTEdge[]} p2 path2
@@ -198,6 +196,7 @@ function MSTGraph(pnode, pedge) {
     * false if p1 is contained in p2
     * or reverse;
     */
+    /*
     var differentPath = function(p1,p2)
     {
       let tmpP1 = p1.slice();
@@ -226,7 +225,7 @@ function MSTGraph(pnode, pedge) {
       // tj. differentPath = false;
       return false;
     }
-
+*/
 /**
  *  reconstructPath(cameFrom,goal)
  *  -called within MSTGraph.js
