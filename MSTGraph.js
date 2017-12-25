@@ -44,7 +44,7 @@ function MSTGraph(pnode, pedge) {
     return p;
   }
 
-  /* depth first search
+  /** depth first search
    * @param {integer} id id of node
    * working dfs
    */
@@ -77,12 +77,57 @@ function MSTGraph(pnode, pedge) {
   }
 
   /**
+   * Dfs to run st operation
+   * dfsSt(start)
+   * to each node
+   * @param {id of node} start of starting node
+   * @returns {MSTEdge[]} from startNode
+   */
+
+   this.dfsSt = function(start)
+   {
+     let arrOfPaths = [];
+     console.log(start);
+     that.NodeList.forEach(
+       (node)=>{
+         //ne radi za samog sebe..
+         if(node.id === start)
+           return;
+
+         arrOfPaths.push(that.dfsUtilSt(start, node.id));
+
+       }
+     )
+
+     /* prodji kroz niz putanja i dodaj u
+        jedan niz sve razlicite
+        grane
+     */
+
+     let pathsRet = [];
+
+     arrOfPaths.forEach((edgeArr)=>{
+       edgeArr.forEach((edge)=>{
+         if(pathsRet.indexOf(edge) === -1)
+         {
+           debugger;
+           pathsRet.push(edge);
+         }
+       })
+      })
+
+      debugger;
+      return pathsRet;
+
+   }
+
+  /**
    *  Work on dfs for spanning tree...
    *
    *  dfsUtilSt(root,goal)
-   *  @param {MSTNode} root starting node
-   *  @param {MSTNode} goal goal nodes
-   *  returns path from root to goal
+   *  @param {id of node} root starting node
+   *  @param {id of node} goal goal nodes
+   *  @returns {MSTEdge[]} path from root to goal
    *  used for getting all paths
    *  from root to all nodes ..
    */
@@ -114,7 +159,7 @@ function MSTGraph(pnode, pedge) {
        if(curr === goal)
        {
          done = true;
-         debugger;
+         //debugger;
          //rekonstruise se putanja od goal do root...
          return reconstructPath(cameFrom,goal);
 
@@ -127,7 +172,7 @@ function MSTGraph(pnode, pedge) {
        }).map((node)=>{
             return node.id;
        });
-       debugger;
+       //debugger;
        console.log(adjInterior);
 
        //add to map and continue to expand
@@ -142,11 +187,13 @@ function MSTGraph(pnode, pedge) {
      }
    }
 
+
+
    /**
     * differentPath(MSTEdge[],MSTEdge[])
     * @param {MSTEdge[]} p1 path1
     * @param {MSTEdge[]} p2 path2
-    * returns bool
+    * @returns {boolean}
     * true if it is different path
     * false if p1 is contained in p2
     * or reverse;
@@ -186,11 +233,12 @@ function MSTGraph(pnode, pedge) {
  *  @param {mapa} cameFrom sadrzi pointere
  *  na rodtilje goal-a obilazak vraca putanju
  *  @param {MSTNode} goal krajnji cvor
+ *  @returns {MSTEdge[]}
  */
 
  var reconstructPath = function(cameFrom,goal)
  {
-   debugger;
+   //debugger;
    let path = [];
    let parent;
    let tmp = goal;
@@ -198,11 +246,11 @@ function MSTGraph(pnode, pedge) {
    do
    {
      parent = cameFrom[tmp];
-    debugger;
+    //debugger;
     if(parent === null)
       break;
 
-    console.log(that.oldEdges);
+    //console.log(that.oldEdges);
      path.push(that.oldEdges.find((edge)=>{
        //pronadji odgovarajucu granau za dva cvora u grafu
         if ((edge.firstNode.id=== parent && edge.secondNode.id === tmp)

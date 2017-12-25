@@ -52,7 +52,7 @@ function runAlgorithm(graph) {
       myResultEdges = [];
       break;
     case 2:
-      myResultEdges = graph.dfsUtilSt(0,2);
+      myResultEdges = graph.dfsSt(Number(inputStartNode.value));
       break;
     case 3:
       myResultEdges = [];
