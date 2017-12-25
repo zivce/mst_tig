@@ -1,7 +1,7 @@
 function MSTGraph(pnode, pedge) {
 
   let that = this;
-
+  this.closedSetLastAdded;
   this.NodeList = pnode.slice();
 
   this.EdgesOfMST = pedge.slice();
@@ -75,6 +75,149 @@ function MSTGraph(pnode, pedge) {
       }
 
   }
+
+  /**
+   *  Work on dfs for spanning tree...
+   *
+   *  dfsUtilSt(root,goal)
+   *  @param {MSTNode} root starting node
+   *  @param {MSTNode} goal goal nodes
+   *  returns path from root to goal
+   *  used for getting all paths
+   *  from root to all nodes ..
+   */
+
+   this.dfsUtilSt = function(root,goal)
+   {
+     //nabavi cvorove od id-eva
+
+     //let rootNode = that.NodeList[Number(root)];
+     //let goalNode = that.NodeList[Number(goal)];
+
+     let openList = [];
+     let closedSet = {};
+     //nodesSeen = 1; later use proly
+
+     openList.push(root);
+
+     closedSet[root] = true;
+
+     let cameFrom = {};
+     cameFrom[root] = null;
+     done = false;
+
+     while(!done)
+     {
+       curr = openList.pop();
+       closedSet[curr] = true;
+
+       if(curr === goal)
+       {
+         done = true;
+         debugger;
+         //rekonstruise se putanja od goal do root...
+         return reconstructPath(cameFrom,goal);
+
+       }
+       //sadrzi cvorove koji nisu u closedSet tj naredni frontier
+       tmp = that.NodeList[Number(curr)];
+
+       let adjInterior = tmp.adjacentNodesList.filter((node)=>{
+         return !(node.id in closedSet);
+       }).map((node)=>{
+            return node.id;
+       });
+       debugger;
+       console.log(adjInterior);
+
+       //add to map and continue to expand
+       adjInterior.forEach((nodeId)=>{
+         cameFrom[nodeId] = curr;
+         //nodesSeen++;
+       })
+
+       openList = openList.concat(adjInterior);
+
+
+     }
+   }
+
+   /**
+    * differentPath(MSTEdge[],MSTEdge[])
+    * @param {MSTEdge[]} p1 path1
+    * @param {MSTEdge[]} p2 path2
+    * returns bool
+    * true if it is different path
+    * false if p1 is contained in p2
+    * or reverse;
+    */
+    var differentPath = function(p1,p2)
+    {
+      let tmpP1 = p1.slice();
+      let tmpP2 = p2.slice();
+
+      tmpP1.filter((edge)=>{
+        return !(edge in tmpP2);
+      })
+
+      if(tmpP1.length != 0)
+        return true;
+
+      //refresh
+      tmpP1 = p1.slice();
+
+      tmpP2.filter((edge)=>{
+          return !(edge in tmpP1);
+      })
+
+      if(tmpP2.length != 0)
+        return true;
+
+      //ako prva sadrzi sve grane druge
+      //i ako druga sadrzi sve grane prve
+      //radi se o istoj putanji
+      // tj. differentPath = false;
+      return false;
+    }
+
+/**
+ *  reconstructPath(cameFrom,goal)
+ *  -called within MSTGraph.js
+ *  @param {mapa} cameFrom sadrzi pointere
+ *  na rodtilje goal-a obilazak vraca putanju
+ *  @param {MSTNode} goal krajnji cvor
+ */
+
+ var reconstructPath = function(cameFrom,goal)
+ {
+   debugger;
+   let path = [];
+   let parent;
+   let tmp = goal;
+
+   do
+   {
+     parent = cameFrom[tmp];
+    debugger;
+    if(parent === null)
+      break;
+
+    console.log(that.oldEdges);
+     path.push(that.oldEdges.find((edge)=>{
+       //pronadji odgovarajucu granau za dva cvora u grafu
+        if ((edge.firstNode.id=== parent && edge.secondNode.id === tmp)
+              || (edge.firstNode.id === tmp && edge.secondNode.id === parent))
+                  return edge;
+     }));
+     tmp = parent;
+   }
+   while(parent != null);
+
+   return path;
+
+ }
+
+
 
 
   /*
