@@ -152,14 +152,13 @@ function MSTGraph(pnode, pedge) {
         curr = openList.shift();
        //skida prvi element
        else
-        curr = openList.pop(); 
+        curr = openList.pop();
 
-       closedSet[curr] = true;
+       //closedSet[curr] = true;
 
        if(curr === goal)
        {
          done = true;
-         //debugger;
          //rekonstruise se putanja od goal do root...
          return reconstructPath(cameFrom,goal);
 
@@ -167,18 +166,18 @@ function MSTGraph(pnode, pedge) {
        //sadrzi cvorove koji nisu u closedSet tj naredni frontier
        tmp = that.NodeList[Number(curr)];
 
+       //new nodes for expansion
        let adjInterior = tmp.adjacentNodesList.filter((node)=>{
          return !(node.id in closedSet);
        }).map((node)=>{
             return node.id;
        });
-       //debugger;
-       //console.log(adjInterior);
 
        //add to map and continue to expand
        adjInterior.forEach((nodeId)=>{
          cameFrom[nodeId] = curr;
-         //nodesSeen++;
+         //neighbors done expand...
+         closedSet[nodeId] = false;
        })
 
 
