@@ -412,6 +412,7 @@ function MSTGraph(pnode, pedge) {
 
       that.NodeList.forEach(function(v,i) {
     that.NodeList[i].cost=Infinity;
+	that.NodeList[i].visited=false;
 });
      var start=0;
     that.NodeList[ start ].cost = 0;
