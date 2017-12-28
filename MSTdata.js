@@ -1,3 +1,5 @@
+{
+
 /*
     Sirovi podaci o čvorovima grafa.
     Redosled od nodes određuje redosled formiranja potega
@@ -474,7 +476,7 @@ var myRawNodes = [{
     }
 ]
 
-/* obrađeni čvorovi i potezi, koriste se u algoritmovima*/
+/* obrađeni čvorovi i potezi, koriste se u algoritmima*/
 var myNodes = [];
 /* obrađeni potezi */
 var myEdges = [];
@@ -493,7 +495,8 @@ var myResultEdges = [];
 
 
 /* kreiranje potega*/
-(function () {
+(function(){
+
     for (var i = 0; i < myIndex.length; i += 3) {
         var i0 = myIndex[i];
         var i1 = myIndex[i + 1];
@@ -550,3 +553,5 @@ var myResultEdges = [];
     console.log(myNodes);
     console.log(myEdges);
 })();
+
+}//scope
