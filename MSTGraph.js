@@ -78,23 +78,22 @@ function MSTGraph(pnode, pedge) {
 
   /**
    * Bfs to run st operation
-   * bfsSt(start)
+   * bdfsSt(start)
    * to each node
    * @param {id of node} start of starting node
    * @returns {MSTEdge[]} from startNode
    */
 
-   this.bfsSt = function(start)
+   this.bdfsSt = function(start,t)
    {
      let arrOfPaths = [];
-     console.log(start);
      that.NodeList.forEach(
        (node)=>{
          //ne radi za samog sebe..
          if(node.id === start)
            return;
 
-         arrOfPaths.push(that.bfsUtilSt(start, node.id));
+         arrOfPaths.push(that.bdfsUtilSt(start, node.id,t));
 
        }
      )
@@ -122,9 +121,9 @@ function MSTGraph(pnode, pedge) {
    }
 
   /**
-   *  Work on bfs for spanning tree...
+   *  Work on bfs,dfs for spanning tree...
    *
-   *  bfsUtilSt(root,goal)
+   *  bdfsUtilSt(root,goal)
    *  @param {integer} root starting node
    *  @param {integer} goal goal nodes
    *  @returns {MSTEdge[]} path from root to goal
@@ -132,7 +131,7 @@ function MSTGraph(pnode, pedge) {
    *  from root to all nodes ..
    */
 
-   this.bfsUtilSt = function(root,goal)
+   this.bdfsUtilSt = function(root,goal,t)
    {
      let openList = [];
      let closedSet = {};
@@ -148,9 +147,13 @@ function MSTGraph(pnode, pedge) {
 
      while(!done)
      {
-       curr = openList.shift();
+       //Bfs/Dfs switch
+       if(t)
+        curr = openList.shift();
        //skida prvi element
-       //curr = openList.pop(); dfs..
+       else
+        curr = openList.pop(); 
+
        closedSet[curr] = true;
 
        if(curr === goal)
@@ -170,7 +173,7 @@ function MSTGraph(pnode, pedge) {
             return node.id;
        });
        //debugger;
-       console.log(adjInterior);
+       //console.log(adjInterior);
 
        //add to map and continue to expand
        adjInterior.forEach((nodeId)=>{
@@ -400,4 +403,74 @@ function MSTGraph(pnode, pedge) {
 
     myResultEdges = KruskalEdges;
   }
+
+
+  this.Dijkstra = function(StartID)
+  {
+
+      start=StartID;
+
+      that.NodeList.forEach(function(v,i) {
+    that.NodeList[i].cost=Infinity;
+});
+     var start=0;
+    that.NodeList[ start ].cost = 0;
+    that.NodeList[ start ].visited=true;
+    var cameFrom =[];
+    var queue = that.NodeList.map( ( v, i ) => i );
+    var queue2=[];
+    queue2.push(start);
+
+    while ( queue2.length > 0 ) {
+        var queueIndex = undefined;
+
+        queue2.reduce( function( minDist, nodeIndex, index ) {
+
+            queueIndex = that.NodeList[ nodeIndex ].cost < minDist ? index : queueIndex;
+            return that.NodeList[ nodeIndex ].cost < minDist ? that.NodeList[ nodeIndex ].cost : minDist;
+        }, Infinity );
+
+        var nextIndex = queue2.splice( queueIndex, 1 )[ 0 ];
+
+        that.NodeList[ nextIndex ].adjacentNodesList.forEach( function( node, i ) {
+		childIndex=node.id;
+		var distance = that.NodeList[ nextIndex ].cost + that.NodeList[ nextIndex ].edgesList[ i ].weight;
+
+		 if(!that.NodeList[ childIndex ].visited)
+            {
+                cameFrom[childIndex] = that.NodeList[ nextIndex ].edgesList[ i ];
+                queue2.push(that.NodeList[ childIndex ].id);
+                that.NodeList[ childIndex ].visited=true;
+            }
+
+		if ( distance < that.NodeList[ childIndex ].cost )
+            {
+                that.NodeList[ childIndex ].cost = distance;
+                cameFrom[childIndex] = that.NodeList[ nextIndex ].edgesList[ i ];
+            }
+
+
+        } );
+
+        //niz cameFrom je niz potega koji treba crtati
+        console.log(that.NodeList[nextIndex].id);
+        console.log(that.NodeList[nextIndex].cost);
+
+    }
+
+
+       myResultEdges = cameFrom;
+
+  }
+
+
+
+
+
+
+
+
+
+
+
 } //end_graf

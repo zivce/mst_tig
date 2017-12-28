@@ -49,13 +49,13 @@ function runAlgorithm(graph) {
       myResultEdges = [];
       break;
     case 1:
-      myResultEdges = graph.bfsSt(Number(inputStartNode.value));
+      myResultEdges = graph.bdfsSt(Number(inputStartNode.value),true);
       break;
     case 2:
-      myResultEdges = [];
+      myResultEdges = graph.bdfsSt(Number(inputStartNode.value),false);
       break;
     case 3:
-      myResultEdges = [];
+      graph.Dijkstra(Number(inputStartNode.value));
       break;
     case 4:
       myResultEdges = [];

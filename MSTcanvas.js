@@ -1,6 +1,6 @@
 function MSTCanvas() {
 
-    /* 
+    /*
         Inicijalizacija
     */
 
@@ -12,7 +12,7 @@ function MSTCanvas() {
     this.edgeList = [];
     // lista svih edge-ve; crtamo pomoću podata iz ove liste
     this.resultEdgesList = [];
-    // contextList, ctxList, lista svih context-a node-ova 
+    // contextList, ctxList, lista svih context-a node-ova
     var cNodesList = [];
     // contextList, ctxList, lista svih context-a edge-va
     var cEdgesList = [];
@@ -36,7 +36,7 @@ function MSTCanvas() {
     // c is context of canvas
     var c = canvas.getContext("2d");
 
-    /* 
+    /*
         DODAVANJA
     */
 
@@ -59,7 +59,7 @@ function MSTCanvas() {
         that.startNode = that.nodeList[id];
     }
 
-    /* 
+    /*
         CRTANJE
     */
 
@@ -71,6 +71,7 @@ function MSTCanvas() {
     // glavna f-ja za crtanje
     this.draw = function () {
         c.clearRect(0, 0, canvas.width, canvas.height);
+        //c.style.background="red";
         cNodesList = [];
         cEdgesList = [];
         if (this.shouldDrawEdges == true) drawEdges();
