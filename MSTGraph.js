@@ -8,7 +8,6 @@ function MSTGraph(pnode, pedge) {
 
   this.oldEdges = this.EdgesOfMST.slice();
 
-  //console.log(this.oldEdges);
   //za sortiranje po opadajucem kriterijumu
   this.sortMethod = function (edge0, edge1) {
     return edge1.weight - edge0.weight;
@@ -71,7 +70,6 @@ function MSTGraph(pnode, pedge) {
       }
 
     })
-    //console.log(neighborsArr);
     if (neighborsArr.length > 0)
       for (let i = 0; i < neighborsArr.length; i++) {
         if (typeof neighborsArr[i] !== "undefined")
@@ -143,7 +141,6 @@ function MSTGraph(pnode, pedge) {
       //Bfs/Dfs switch
       if (t)
         curr = openList.shift();
-      //skida prvi element
       else
         curr = openList.pop();
 
@@ -211,7 +208,6 @@ function MSTGraph(pnode, pedge) {
    */
   this.reversedelete = function () {
     that.EdgesOfMST.sort(that.sortMethod);
-    //console.log(that.EdgesOfMST);
     let i = 0;
 
     while (i < that.EdgesOfMST.length) {
@@ -227,7 +223,6 @@ function MSTGraph(pnode, pedge) {
         i = i + 1;
       }
 
-      //console.log(that.EdgesOfMST);
       that.resetVisits();
     } //end while
 
@@ -416,7 +411,6 @@ function MSTGraph(pnode, pedge) {
 
     }
 
-    console.log("PrimEnded");
     myResultEdges = primEdgesFinal;
 
 
@@ -471,12 +465,8 @@ function MSTGraph(pnode, pedge) {
       });
 
       //niz cameFrom je niz potega koji treba crtati
-      //console.log(that.NodeList[nextIndex].id);
-      // console.log(that.NodeList[nextIndex].cost);
-
     }
 
-    console.log("DijkstraEnded");
     myResultEdges = cameFrom;
 
   }
