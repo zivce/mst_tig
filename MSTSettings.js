@@ -54,27 +54,47 @@
   }
 
   function runAlgorithm(graph) {
+      let a,b;
     switch (selectAlgorithm.selectedIndex) {
+
       case 0:
         myResultEdges = [];
         break;
       case 1:
+        a = performance.now();
         myResultEdges = graph.bdfsSt(Number(inputStartNode.value),true);
+        b = performance.now();
+        console.log("bfs run for " + (b-a)  + "ms");
         break;
       case 2:
+        a = performance.now();
         myResultEdges = graph.bdfsSt(Number(inputStartNode.value),false);
+        b = performance.now();
+        console.log("dfs run for " + (b-a)  + "ms");
         break;
       case 3:
+        a = performance.now();
         graph.Dijkstra(Number(inputStartNode.value));
+        b = performance.now();
+        console.log("Dijkstra run for " + (b-a)  + "ms");
         break;
       case 4:
+        a = performance.now();
         graph.Prim(Number(inputStartNode.value));
+        b = performance.now();
+        console.log("Prim run for " + (b-a)  + "ms");
         break;
       case 5:
+        a = performance.now();
         graph.Kruskal();
+        b = performance.now();
+        console.log("Kruskal run for " + (b-a)  + "ms");
         break;
       case 6:
+        a = performance.now();
         graph.reversedelete();
+        b = performance.now();
+        console.log("RevDel run for " + (b-a)  + "ms");
         break;
     }
 
