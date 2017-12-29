@@ -13,6 +13,11 @@ function MSTGraph(pnode, pedge) {
   this.sortMethod = function (edge0, edge1) {
     return edge1.weight - edge0.weight;
   };
+    
+    
+    this.sortMethod2 = function (edge0, edge1) {
+    return edge0.weight - edge1.weight;
+  };
   let kruskal, revdel;
   kruskal = 0;
   revdel = 0;
@@ -312,6 +317,10 @@ function MSTGraph(pnode, pedge) {
 
   } //end mst
 
+  
+  
+  
+  
   this.Kruskal = function () {
     that.EdgesOfMST.sort(that.sortMethod);
 
@@ -403,6 +412,89 @@ function MSTGraph(pnode, pedge) {
     myResultEdges = KruskalEdges;
   }
 
+  
+  
+  
+  
+  this.Prim = function(StartID)
+  {
+      
+      start= StartID;
+      var primEdges =[];
+      var primNodes=[];
+      var primEdgesFinal=[];
+      
+      that.EdgesOfMST.forEach(function(v,i){that.EdgesOfMST[i].visited=false;});
+      that.NodeList.forEach(function(v,i){that.NodeList[i].visited=false;});
+      that.NodeList[start].edgesList.forEach(function(v,i){
+        primEdges.push(that.NodeList[start].edgesList[i]); 
+        that.NodeList[start].edgesList[i].visited=true;  
+      });
+      primNodes.push(start);
+      that.NodeList[start].visited=true;
+      
+      primEdges.sort(that.sortMetod2);
+      
+      
+      
+      
+      while(primEdgesFinal.length<that.NodeList.length-1)
+          {
+             
+              if((primNodes.includes(primEdges[0].firstNode.id))&& (primNodes.includes(primEdges[0].secondNode.id)))
+                  {
+                      primEdges.splice(0,1);
+                      continue;
+                      
+                  }
+              
+           
+              if(primNodes.includes(primEdges[0].firstNode.id))
+                  {
+                      
+                      
+                      that.NodeList[primEdges[0].secondNode.id].edgesList.forEach(function(v,i){
+                          
+                          if(that.NodeList[primEdges[0].secondNode.id].edgesList[i].visited==false)
+                          primEdges.push(that.NodeList[primEdges[0].secondNode.id].edgesList[i]); 
+                          that.NodeList[primEdges[0].secondNode.id].edgesList[i].visited=true;  
+                      });
+                      primEdgesFinal.push(primEdges[0]);
+                      primNodes.push(primEdges[0].secondNode.id);
+                      primEdges.splice(0,1);
+                       primEdges.sort(that.sortMethod2);
+                      continue;
+                    
+                      
+                  }
+              
+              
+              if(primNodes.includes(primEdges[0].secondNode.id))
+                  {
+                     
+                      that.NodeList[primEdges[0].firstNode.id].edgesList.forEach(function(v,i){
+                          
+                          if(that.NodeList[primEdges[0].firstNode.id].edgesList[i].visited==false)
+                          primEdges.push(that.NodeList[primEdges[0].firstNode.id].edgesList[i]); 
+                          that.NodeList[primEdges[0].firstNode.id].edgesList[i].visited=true;  
+                      });
+                      primEdgesFinal.push(primEdges[0]);
+                      primNodes.push(primEdges[0].firstNode.id);
+                      primEdges.splice(0,1);
+                      primEdges.sort(that.sortMethod2);
+                      continue;
+                  }
+              
+          }
+      
+     console.log("PrimEnded");
+      myResultEdges = primEdgesFinal;
+      
+      
+      
+  }
+  
+  
 
   this.Dijkstra = function(StartID)
   {
@@ -413,7 +505,7 @@ function MSTGraph(pnode, pedge) {
     that.NodeList[i].cost=Infinity;
 	that.NodeList[i].visited=false;
 });
-     var start=0;
+   
     that.NodeList[ start ].cost = 0;
     that.NodeList[ start ].visited=true;
     var cameFrom =[];
@@ -453,12 +545,12 @@ function MSTGraph(pnode, pedge) {
         } );
 
         //niz cameFrom je niz potega koji treba crtati
-        console.log(that.NodeList[nextIndex].id);
-        console.log(that.NodeList[nextIndex].cost);
+        //console.log(that.NodeList[nextIndex].id);
+       // console.log(that.NodeList[nextIndex].cost);
 
     }
 
-
+       console.log("DijkstraEnded");
        myResultEdges = cameFrom;
 
   }

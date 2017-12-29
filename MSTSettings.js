@@ -60,7 +60,7 @@
         graph.Dijkstra(Number(inputStartNode.value));
         break;
       case 4:
-        myResultEdges = [];
+        graph.Prim(Number(inputStartNode.value));
         break;
       case 5:
         graph.Kruskal();
