@@ -13,9 +13,9 @@ function MSTGraph(pnode, pedge) {
   this.sortMethod = function (edge0, edge1) {
     return edge1.weight - edge0.weight;
   };
-    
-    
-    this.sortMethod2 = function (edge0, edge1) {
+
+
+  this.sortMethod2 = function (edge0, edge1) {
     return edge0.weight - edge1.weight;
   };
   let kruskal, revdel;
@@ -66,8 +66,7 @@ function MSTGraph(pnode, pedge) {
       if (edge.firstNode === workingNode) {
         return edge.secondNode;
       }
-      if(edge.secondNode === workingNode)
-      {
+      if (edge.secondNode === workingNode) {
         return edge.firstNode;
       }
 
@@ -89,41 +88,33 @@ function MSTGraph(pnode, pedge) {
    * @returns {MSTEdge[]} from startNode
    */
 
-   this.bdfsSt = function(start,t)
-   {
-     let arrOfPaths = [];
-     that.NodeList.forEach(
-       (node)=>{
-         //ne radi za samog sebe..
-         if(node.id === start)
-           return;
+  this.bdfsSt = function (start, t) {
+    let arrOfPaths = [];
+    that.NodeList.forEach(
+      (node) => {
+        if (node.id === start)
+          return;
+        arrOfPaths.push(that.bdfsUtilSt(start, node.id, t));
+      }
+    )
 
-         arrOfPaths.push(that.bdfsUtilSt(start, node.id,t));
+    /* prodji kroz niz putanja i dodaj u
+       jedan niz sve razlicite
+       grane
+    */
 
-       }
-     )
+    let pathsRet = [];
 
-     /* prodji kroz niz putanja i dodaj u
-        jedan niz sve razlicite
-        grane
-     */
-
-     let pathsRet = [];
-
-     arrOfPaths.forEach((edgeArr)=>{
-       edgeArr.forEach((edge)=>{
-         if(pathsRet.indexOf(edge) === -1)
-         {
-           //debugger;
-           pathsRet.push(edge);
-         }
-       })
+    arrOfPaths.forEach((edgeArr) => {
+      edgeArr.forEach((edge) => {
+        if (pathsRet.indexOf(edge) === -1) {
+          pathsRet.push(edge);
+        }
       })
+    })
+    return pathsRet;
 
-      //debugger;
-      return pathsRet;
-
-   }
+  }
 
   /**
    *  Work on bfs,dfs for spanning tree...
@@ -136,140 +127,79 @@ function MSTGraph(pnode, pedge) {
    *  from root to all nodes ..
    */
 
-   this.bdfsUtilSt = function(root,goal,t)
-   {
-     let openList = [];
-     let closedSet = {};
-     //nodesSeen = 1; later use proly
+  this.bdfsUtilSt = function (root, goal, t) {
+    let openList = [];
+    let closedSet = {};
 
-     openList.push(root);
+    openList.push(root);
 
-     closedSet[root] = true;
+    closedSet[root] = true;
 
-     let cameFrom = {};
-     cameFrom[root] = null;
-     done = false;
+    let cameFrom = {};
+    cameFrom[root] = null;
+    done = false;
 
-     while(!done)
-     {
-       //Bfs/Dfs switch
-       if(t)
+    while (!done) {
+      //Bfs/Dfs switch
+      if (t)
         curr = openList.shift();
-       //skida prvi element
-       else
+      //skida prvi element
+      else
         curr = openList.pop();
 
-       //closedSet[curr] = true;
 
-       if(curr === goal)
-       {
-         done = true;
-         //rekonstruise se putanja od goal do root...
-         return reconstructPath(cameFrom,goal);
+      if (curr === goal) {
+        done = true;
+        //rekonstruise se putanja od goal do root...
+        return reconstructPath(cameFrom, goal);
 
-       }
-       //sadrzi cvorove koji nisu u closedSet tj naredni frontier
-       tmp = that.NodeList[Number(curr)];
+      }
 
-       //new nodes for expansion
-       let adjInterior = tmp.adjacentNodesList.filter((node)=>{
-         return !(node.id in closedSet);
-       }).map((node)=>{
-            return node.id;
-       });
+      tmp = that.NodeList[Number(curr)];
 
-       //add to map and continue to expand
-       adjInterior.forEach((nodeId)=>{
-         cameFrom[nodeId] = curr;
-         //neighbors done expand...
-         closedSet[nodeId] = false;
-       })
+      //new nodes for expansion
+      let adjInterior = tmp.adjacentNodesList.filter((node) => {
+        return !(node.id in closedSet);
+      }).map((node) => {
+        return node.id;
+      });
 
-
-       openList = openList.concat(adjInterior);
-
-
-     }
-   }
-
-
-
-   /*
-    * differentPath(MSTEdge[],MSTEdge[])
-    * @param {MSTEdge[]} p1 path1
-    * @param {MSTEdge[]} p2 path2
-    * @returns {boolean}
-    * true if it is different path
-    * false if p1 is contained in p2
-    * or reverse;
-    */
-    /*
-    var differentPath = function(p1,p2)
-    {
-      let tmpP1 = p1.slice();
-      let tmpP2 = p2.slice();
-
-      tmpP1.filter((edge)=>{
-        return !(edge in tmpP2);
+      //add to map and continue to expand
+      adjInterior.forEach((nodeId) => {
+        cameFrom[nodeId] = curr;
+        //neighbors done expand...
+        closedSet[nodeId] = false;
       })
-
-      if(tmpP1.length != 0)
-        return true;
-
-      //refresh
-      tmpP1 = p1.slice();
-
-      tmpP2.filter((edge)=>{
-          return !(edge in tmpP1);
-      })
-
-      if(tmpP2.length != 0)
-        return true;
-
-      //ako prva sadrzi sve grane druge
-      //i ako druga sadrzi sve grane prve
-      //radi se o istoj putanji
-      // tj. differentPath = false;
-      return false;
+      openList = openList.concat(adjInterior);
     }
-*/
-/**
- *  reconstructPath(cameFrom,goal)
- *  -called within MSTGraph.js
- *  @param {mapa} cameFrom sadrzi pointere
- *  na rodtilje goal-a obilazak vraca putanju
- *  @param {MSTNode} goal krajnji cvor
- *  @returns {MSTEdge[]}
- */
+  }
 
- var reconstructPath = function(cameFrom,goal)
- {
-   //debugger;
-   let path = [];
-   let parent;
-   let tmp = goal;
 
-   do
-   {
-     parent = cameFrom[tmp];
-    //debugger;
-    if(parent === null)
-      break;
 
-    //console.log(that.oldEdges);
-     path.push(that.oldEdges.find((edge)=>{
-       //pronadji odgovarajucu granau za dva cvora u grafu
-        if ((edge.firstNode.id=== parent && edge.secondNode.id === tmp)
-              || (edge.firstNode.id === tmp && edge.secondNode.id === parent))
-                  return edge;
-     }));
-     tmp = parent;
-   }
-   while(parent != null);
+  var reconstructPath = function (cameFrom, goal) {
 
-   return path;
+    let path = [];
+    let parent;
+    let tmp = goal;
 
- }
+    do {
+      parent = cameFrom[tmp];
+      if (parent === null)
+        break;
+
+      path.push(that.oldEdges.find((edge) => {
+        //pronadji odgovarajucu granau za dva cvora u grafu
+        if ((edge.firstNode.id === parent && edge.secondNode.id === tmp) ||
+          (edge.firstNode.id === tmp && edge.secondNode.id === parent))
+          return edge;
+      }));
+      tmp = parent;
+    }
+    while (parent != null);
+
+    return path;
+
+  }
 
 
 
@@ -317,10 +247,10 @@ function MSTGraph(pnode, pedge) {
 
   } //end mst
 
-  
-  
-  
-  
+
+
+
+
   this.Kruskal = function () {
     that.EdgesOfMST.sort(that.sortMethod);
 
@@ -412,157 +342,143 @@ function MSTGraph(pnode, pedge) {
     myResultEdges = KruskalEdges;
   }
 
-  
-  
-  
-  
-  this.Prim = function(StartID)
-  {
-      
-      start= StartID;
-      var primEdges =[];
-      var primNodes=[];
-      var primEdgesFinal=[];
-      
-      that.EdgesOfMST.forEach(function(v,i){that.EdgesOfMST[i].visited=false;});
-      that.NodeList.forEach(function(v,i){that.NodeList[i].visited=false;});
-      that.NodeList[start].edgesList.forEach(function(v,i){
-        primEdges.push(that.NodeList[start].edgesList[i]); 
-        that.NodeList[start].edgesList[i].visited=true;  
-      });
-      primNodes.push(start);
-      that.NodeList[start].visited=true;
-      
-      primEdges.sort(that.sortMetod2);
-      
-      
-      
-      
-      while(primEdgesFinal.length<that.NodeList.length-1)
-          {
-             
-              if((primNodes.includes(primEdges[0].firstNode.id))&& (primNodes.includes(primEdges[0].secondNode.id)))
-                  {
-                      primEdges.splice(0,1);
-                      continue;
-                      
-                  }
-              
-           
-              if(primNodes.includes(primEdges[0].firstNode.id))
-                  {
-                      
-                      
-                      that.NodeList[primEdges[0].secondNode.id].edgesList.forEach(function(v,i){
-                          
-                          if(that.NodeList[primEdges[0].secondNode.id].edgesList[i].visited==false)
-                          primEdges.push(that.NodeList[primEdges[0].secondNode.id].edgesList[i]); 
-                          that.NodeList[primEdges[0].secondNode.id].edgesList[i].visited=true;  
-                      });
-                      primEdgesFinal.push(primEdges[0]);
-                      primNodes.push(primEdges[0].secondNode.id);
-                      primEdges.splice(0,1);
-                       primEdges.sort(that.sortMethod2);
-                      continue;
-                    
-                      
-                  }
-              
-              
-              if(primNodes.includes(primEdges[0].secondNode.id))
-                  {
-                     
-                      that.NodeList[primEdges[0].firstNode.id].edgesList.forEach(function(v,i){
-                          
-                          if(that.NodeList[primEdges[0].firstNode.id].edgesList[i].visited==false)
-                          primEdges.push(that.NodeList[primEdges[0].firstNode.id].edgesList[i]); 
-                          that.NodeList[primEdges[0].firstNode.id].edgesList[i].visited=true;  
-                      });
-                      primEdgesFinal.push(primEdges[0]);
-                      primNodes.push(primEdges[0].firstNode.id);
-                      primEdges.splice(0,1);
-                      primEdges.sort(that.sortMethod2);
-                      continue;
-                  }
-              
-          }
-      
-     console.log("PrimEnded");
-      myResultEdges = primEdgesFinal;
-      
-      
-      
-  }
-  
-  
-
-  this.Dijkstra = function(StartID)
-  {
-
-      start=StartID;
-
-      that.NodeList.forEach(function(v,i) {
-    that.NodeList[i].cost=Infinity;
-	that.NodeList[i].visited=false;
-});
-   
-    that.NodeList[ start ].cost = 0;
-    that.NodeList[ start ].visited=true;
-    var cameFrom =[];
-    var queue = that.NodeList.map( ( v, i ) => i );
-    var queue2=[];
-    queue2.push(start);
-
-    while ( queue2.length > 0 ) {
-        var queueIndex = undefined;
-
-        queue2.reduce( function( minDist, nodeIndex, index ) {
-
-            queueIndex = that.NodeList[ nodeIndex ].cost < minDist ? index : queueIndex;
-            return that.NodeList[ nodeIndex ].cost < minDist ? that.NodeList[ nodeIndex ].cost : minDist;
-        }, Infinity );
-
-        var nextIndex = queue2.splice( queueIndex, 1 )[ 0 ];
-
-        that.NodeList[ nextIndex ].adjacentNodesList.forEach( function( node, i ) {
-		childIndex=node.id;
-		var distance = that.NodeList[ nextIndex ].cost + that.NodeList[ nextIndex ].edgesList[ i ].weight;
-
-		 if(!that.NodeList[ childIndex ].visited)
-            {
-                cameFrom[childIndex] = that.NodeList[ nextIndex ].edgesList[ i ];
-                queue2.push(that.NodeList[ childIndex ].id);
-                that.NodeList[ childIndex ].visited=true;
-            }
-
-		if ( distance < that.NodeList[ childIndex ].cost )
-            {
-                that.NodeList[ childIndex ].cost = distance;
-                cameFrom[childIndex] = that.NodeList[ nextIndex ].edgesList[ i ];
-            }
 
 
-        } );
 
-        //niz cameFrom je niz potega koji treba crtati
-        //console.log(that.NodeList[nextIndex].id);
-       // console.log(that.NodeList[nextIndex].cost);
+
+  this.Prim = function (StartID) {
+
+    start = StartID;
+    var primEdges = [];
+    var primNodes = [];
+    var primEdgesFinal = [];
+
+    that.EdgesOfMST.forEach(function (v, i) {
+      that.EdgesOfMST[i].visited = false;
+    });
+    that.NodeList.forEach(function (v, i) {
+      that.NodeList[i].visited = false;
+    });
+    that.NodeList[start].edgesList.forEach(function (v, i) {
+      primEdges.push(that.NodeList[start].edgesList[i]);
+      that.NodeList[start].edgesList[i].visited = true;
+    });
+    primNodes.push(start);
+    that.NodeList[start].visited = true;
+
+    primEdges.sort(that.sortMetod2);
+
+
+
+
+    while (primEdgesFinal.length < that.NodeList.length - 1) {
+
+      if ((primNodes.includes(primEdges[0].firstNode.id)) && (primNodes.includes(primEdges[0].secondNode.id))) {
+        primEdges.splice(0, 1);
+        continue;
+
+      }
+
+
+      if (primNodes.includes(primEdges[0].firstNode.id)) {
+
+
+        that.NodeList[primEdges[0].secondNode.id].edgesList.forEach(function (v, i) {
+
+          if (that.NodeList[primEdges[0].secondNode.id].edgesList[i].visited == false)
+            primEdges.push(that.NodeList[primEdges[0].secondNode.id].edgesList[i]);
+          that.NodeList[primEdges[0].secondNode.id].edgesList[i].visited = true;
+        });
+        primEdgesFinal.push(primEdges[0]);
+        primNodes.push(primEdges[0].secondNode.id);
+        primEdges.splice(0, 1);
+        primEdges.sort(that.sortMethod2);
+        continue;
+
+
+      }
+
+
+      if (primNodes.includes(primEdges[0].secondNode.id)) {
+
+        that.NodeList[primEdges[0].firstNode.id].edgesList.forEach(function (v, i) {
+
+          if (that.NodeList[primEdges[0].firstNode.id].edgesList[i].visited == false)
+            primEdges.push(that.NodeList[primEdges[0].firstNode.id].edgesList[i]);
+          that.NodeList[primEdges[0].firstNode.id].edgesList[i].visited = true;
+        });
+        primEdgesFinal.push(primEdges[0]);
+        primNodes.push(primEdges[0].firstNode.id);
+        primEdges.splice(0, 1);
+        primEdges.sort(that.sortMethod2);
+        continue;
+      }
 
     }
 
-       console.log("DijkstraEnded");
-       myResultEdges = cameFrom;
+    console.log("PrimEnded");
+    myResultEdges = primEdgesFinal;
+
+
 
   }
 
 
 
+  this.Dijkstra = function (StartID) {
+
+    start = StartID;
+
+    that.NodeList.forEach(function (v, i) {
+      that.NodeList[i].cost = Infinity;
+      that.NodeList[i].visited = false;
+    });
+
+    that.NodeList[start].cost = 0;
+    that.NodeList[start].visited = true;
+    var cameFrom = [];
+    var queue = that.NodeList.map((v, i) => i);
+    var queue2 = [];
+    queue2.push(start);
+
+    while (queue2.length > 0) {
+      var queueIndex = undefined;
+
+      queue2.reduce(function (minDist, nodeIndex, index) {
+
+        queueIndex = that.NodeList[nodeIndex].cost < minDist ? index : queueIndex;
+        return that.NodeList[nodeIndex].cost < minDist ? that.NodeList[nodeIndex].cost : minDist;
+      }, Infinity);
+
+      var nextIndex = queue2.splice(queueIndex, 1)[0];
+
+      that.NodeList[nextIndex].adjacentNodesList.forEach(function (node, i) {
+        childIndex = node.id;
+        var distance = that.NodeList[nextIndex].cost + that.NodeList[nextIndex].edgesList[i].weight;
+
+        if (!that.NodeList[childIndex].visited) {
+          cameFrom[childIndex] = that.NodeList[nextIndex].edgesList[i];
+          queue2.push(that.NodeList[childIndex].id);
+          that.NodeList[childIndex].visited = true;
+        }
+
+        if (distance < that.NodeList[childIndex].cost) {
+          that.NodeList[childIndex].cost = distance;
+          cameFrom[childIndex] = that.NodeList[nextIndex].edgesList[i];
+        }
 
 
+      });
 
+      //niz cameFrom je niz potega koji treba crtati
+      //console.log(that.NodeList[nextIndex].id);
+      // console.log(that.NodeList[nextIndex].cost);
 
+    }
 
+    console.log("DijkstraEnded");
+    myResultEdges = cameFrom;
 
-
+  }
 
 } //end_graf

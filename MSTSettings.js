@@ -24,6 +24,14 @@
 
 
   divRun.onclick = function () {
+    if (inputStartNode.value>49){
+      inputStartNode.value = 49;
+    }
+    else if (inputStartNode.value<0){
+      inputStartNode.value = 0;
+    }
+
+
     myMST.setStartNode(inputStartNode.value);
     var graph = new MSTGraph(myNodes, myEdges);
     runAlgorithm(graph);

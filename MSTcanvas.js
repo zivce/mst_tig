@@ -83,7 +83,7 @@ function MSTCanvas() {
         if (this.shouldDrawWeights == true) drawWeights();
     }
 
-    // f-ja za crtanje, svih node-ova iz liste, na canvas-u
+    // f-ja za crtanje, svih node-ova iz liste, na canvas
     function drawNodes() {
         that.nodeList.forEach(element => {
             c.node = element;
