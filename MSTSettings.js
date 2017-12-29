@@ -33,7 +33,7 @@
 
 
     myMST.setStartNode(inputStartNode.value);
-    var graph = new MSTGraph(myNodes, myEdges);
+    var graph = new MSTGraph(data.myNodes, data.myEdges);
     runAlgorithm(graph);
 
     if (cbxEdges.checked == true) myMST.shouldDrawEdges = true;

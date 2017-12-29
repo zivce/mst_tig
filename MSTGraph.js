@@ -52,7 +52,6 @@ function MSTGraph(pnode, pedge) {
    * @param {integer} id id of node
    * working dfs
    */
-  this.count = 0;
   this.dfs = function (id) {
     let workingNode = that.NodeList[id];
 
@@ -79,7 +78,7 @@ function MSTGraph(pnode, pedge) {
   }
 
   /**
-   * Bfs to run st operation
+   * Bfs/Dfs to run st operation
    * bdfsSt(start)
    * to each node
    * @param {id of node} start of starting node
@@ -174,7 +173,6 @@ function MSTGraph(pnode, pedge) {
 
 
   var reconstructPath = function (cameFrom, goal) {
-
     let path = [];
     let parent;
     let tmp = goal;
@@ -185,7 +183,7 @@ function MSTGraph(pnode, pedge) {
         break;
 
       path.push(that.oldEdges.find((edge) => {
-        //pronadji odgovarajucu granau za dva cvora u grafu
+        //pronadji odgovarajucu granu za dva cvora u grafu
         if ((edge.firstNode.id === parent && edge.secondNode.id === tmp) ||
           (edge.firstNode.id === tmp && edge.secondNode.id === parent))
           return edge;

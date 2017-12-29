@@ -1,6 +1,4 @@
-{
   var myMST = new MSTCanvas();
-  myMST.addListOfNodes(myNodes);
-  myMST.addListOfEdges(myEdges);
+  myMST.addListOfNodes(data.myNodes);
+  myMST.addListOfEdges(data.myEdges);
   myMST.draw();
-}

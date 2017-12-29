@@ -1,4 +1,5 @@
-{
+var data = (function(){
+
 
 /*
     Sirovi podaci o čvorovima grafa.
@@ -554,4 +555,9 @@ var myResultEdges = [];
     console.log(myEdges);
 })();
 
-}//scope
+  return {
+    myNodes,
+    myEdges
+  }
+
+})();
