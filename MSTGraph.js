@@ -69,6 +69,7 @@ function MSTGraph(pnode, pedge) {
       }
 
     })
+
     if (neighborsArr.length > 0)
       for (let i = 0; i < neighborsArr.length; i++) {
         if (typeof neighborsArr[i] !== "undefined")
@@ -76,6 +77,79 @@ function MSTGraph(pnode, pedge) {
       }
 
   }
+
+  /**
+   * Nedovrsena fja dfs 2 spanning tree
+   * @param {integer} root 
+   */
+
+  // this.dfsST = function(root)
+  // { 
+  //   this.resetVisits();
+  //   //console.log("DFS ST NEW ");
+  //   var stack = [];
+  //   var edgesForExport = [];
+  //   stack.push(root);
+
+  //   while(stack.length!=0)
+  //   {
+  //     var curr = stack.pop();//skida prvi elem
+
+  //     this.NodeList[curr].visited = true;
+
+  //     edgesForExport.push(this.NodeList[curr].edgesList.find((edge) => {
+  //       if(edge.firstNode === this.NodeList[curr].cameFrom || edge.secondNode === this.NodeList[curr].cameFrom)
+  //         return edge;
+  //     }))
+
+  //     this.NodeList[curr].adjacentNodesList.forEach((neighbor)=>{
+  //       if(neighbor.visited == false)
+  //       {
+  //         neighbor.cameFrom = this.NodeList[curr];
+  //         stack.push(neighbor.id);
+  //       }  
+  //     })
+  //   }
+
+  //   console.log(edgesForExport);
+  //   return edgesForExport;
+  // }
+
+
+  this.bfsST = function (root) {
+    this.resetVisits();
+    //console.log("BFS ST NEW ");
+    var queue = [];
+    var edgesForExport = [];
+    this.NodeList[root].visited = true;
+    queue.push(root);
+
+    while (queue.length != 0) {
+      var curr = queue.shift(); //skida prvi elem
+
+
+      this.NodeList[curr].adjacentNodesList.forEach((neighbor) => {
+        if (neighbor.visited == false) {
+          //debugger;
+          edgesForExport.push(this.NodeList[curr].edgesList.find((edge) => {
+            if (edge.firstNode === neighbor || edge.secondNode === neighbor)
+
+              return edge;
+          }))
+          //bfs visited
+          neighbor.visited = true;
+          queue.push(neighbor.id);
+        }
+      })
+    }
+
+    //console.log(edgesForExport);
+    return edgesForExport;
+  }
+
+
+
+
 
   /**
    * Bfs/Dfs to run st operation
@@ -122,6 +196,7 @@ function MSTGraph(pnode, pedge) {
    *  @returns {MSTEdge[]} path from root to goal
    *  used for getting all paths
    *  from root to all nodes ..
+   *  t true it is bfs false dfs
    */
 
   this.bdfsUtilSt = function (root, goal, t) {
@@ -143,6 +218,10 @@ function MSTGraph(pnode, pedge) {
       else
         curr = openList.pop();
 
+      //added this line on 15.1
+      if (!t)
+        closedSet[curr] = true;
+      //...
 
       if (curr === goal) {
         done = true;
@@ -164,8 +243,13 @@ function MSTGraph(pnode, pedge) {
       adjInterior.forEach((nodeId) => {
         cameFrom[nodeId] = curr;
         //neighbors done expand...
-        closedSet[nodeId] = false;
+
+        //added this line for bfs on 15.1
+        if (t)
+          closedSet[nodeId] = false;
+        //....
       })
+
       openList = openList.concat(adjInterior);
     }
   }
@@ -205,6 +289,7 @@ function MSTGraph(pnode, pedge) {
    *  working..
    */
   this.reversedelete = function () {
+
     that.EdgesOfMST.sort(that.sortMethod);
     let i = 0;
 
@@ -225,16 +310,16 @@ function MSTGraph(pnode, pedge) {
     } //end while
 
     //working
-    console.log("min sp tree");
-    console.log(this.EdgesOfMST);
+    // console.log("min sp tree");
+    // console.log(this.EdgesOfMST);
 
-    console.log("min weight of revdel:")
-
+    // console.log("min weight of revdel:")
+    revdel = 0;
     this.EdgesOfMST.forEach((el) => {
       revdel += el.weight;
     })
 
-    console.log(revdel);
+    // console.log(revdel);
 
     myResultEdges = this.EdgesOfMST;
 
@@ -245,13 +330,16 @@ function MSTGraph(pnode, pedge) {
 
 
   this.Kruskal = function () {
-    that.EdgesOfMST.sort(that.sortMethod);
+
+    var EdgesOfMST2 = [];
+    EdgesOfMST2 = that.EdgesOfMST.slice();
+    EdgesOfMST2.sort(that.sortMethod);
 
     var NodeSets = [];
     var EdgeSets = [];
     var KruskalEdges = [];
 
-    var CurrentEdge0 = this.EdgesOfMST.pop();
+    var CurrentEdge0 = EdgesOfMST2.pop();
     var Node01 = CurrentEdge0.firstNode;
     var Node02 = CurrentEdge0.secondNode;
 
@@ -263,7 +351,7 @@ function MSTGraph(pnode, pedge) {
     bb.push(CurrentEdge0);
 
     while (EdgeSets[0].length < this.NodeList.length - 1) {
-      var CurrentEdge = this.EdgesOfMST.pop();
+      var CurrentEdge = EdgesOfMST2.pop();
       var Node1 = CurrentEdge.firstNode;
       var Node2 = CurrentEdge.secondNode;
       var i1 = -1;
@@ -325,12 +413,12 @@ function MSTGraph(pnode, pedge) {
     }
     KruskalEdges = EdgeSets[0].slice();
 
-    console.log("min weight of kruskal:");
+    // console.log("min weight of kruskal:");
     KruskalEdges.forEach((el) => {
       kruskal += el.weight;
     })
 
-    console.log(kruskal);
+    // console.log(kruskal);
 
     myResultEdges = KruskalEdges;
   }
@@ -364,10 +452,12 @@ function MSTGraph(pnode, pedge) {
 
 
 
-    while (primEdgesFinal.length < that.NodeList.length - 1) {
+    while (primEdges.length != 0) {
+      primEdges.sort(that.sortMethod2);
 
       if ((primNodes.includes(primEdges[0].firstNode.id)) && (primNodes.includes(primEdges[0].secondNode.id))) {
         primEdges.splice(0, 1);
+
         continue;
 
       }
@@ -385,7 +475,6 @@ function MSTGraph(pnode, pedge) {
         primEdgesFinal.push(primEdges[0]);
         primNodes.push(primEdges[0].secondNode.id);
         primEdges.splice(0, 1);
-        primEdges.sort(that.sortMethod2);
         continue;
 
 
@@ -403,15 +492,14 @@ function MSTGraph(pnode, pedge) {
         primEdgesFinal.push(primEdges[0]);
         primNodes.push(primEdges[0].firstNode.id);
         primEdges.splice(0, 1);
-        primEdges.sort(that.sortMethod2);
         continue;
       }
 
     }
 
     myResultEdges = primEdgesFinal;
-
-
+    // console.log("PRIM ALGO")
+    // console.log(myResultEdges);
 
   }
 

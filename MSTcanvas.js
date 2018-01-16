@@ -11,7 +11,8 @@ function MSTCanvas() {
     // lista svih edge-ve; crtamo pomoću podata iz ove liste
     this.edgeList = [];
     // lista svih edge-ve; crtamo pomoću podata iz ove liste
-    this.resultEdgesList = [];
+    this.resultEdgesList1 = [];
+    this.resultEdgesList2 = [];
     // contextList, ctxList, lista svih context-a node-ova
     var cNodesList = [];
     // contextList, ctxList, lista svih context-a edge-va
@@ -51,8 +52,12 @@ function MSTCanvas() {
     }
 
     // da dodam remote listu resultEdge-va (lita će se nalaziti u drugom fajlu kao globalna promenljiva)
-    this.addListOfReslutEdges = function (list) {
-        this.resultEdgesList = list;
+    this.addListOfReslutEdges1 = function (list) {
+        this.resultEdgesList1 = list;
+    }
+
+    this.addListOfReslutEdges2 = function (list) {
+        this.resultEdgesList2 = list;
     }
 
     this.setStartNode = function (id) {
@@ -71,11 +76,19 @@ function MSTCanvas() {
     // glavna f-ja za crtanje
     this.draw = function () {
         c.clearRect(0, 0, canvas.width, canvas.height);
-        //c.style.background="red";
+
+        c.beginPath();
+        c.fillStyle = "#FFFFFF";
+        c.fillRect(0, 0, canvas.width, canvas.height);
+        c.closePath();
+
         cNodesList = [];
         cEdgesList = [];
         if (this.shouldDrawEdges == true) drawEdges();
-        if (this.shouldDrawResultEdges == true) drawResultEdges();
+        if (this.shouldDrawResultEdges == true) {
+            drawResultEdges1();
+            drawResultEdges2();
+        }
         if (this.shouldDrawIDs == true) drawIDs();
         /* wights go here */
         drawNodes();
@@ -87,13 +100,12 @@ function MSTCanvas() {
     function drawNodes() {
         that.nodeList.forEach(element => {
             c.node = element;
-            c.nodeRadius = 40;
+            c.nodeRadius = 50;
             c.beginPath();
             c.strokeStyle = "black";
             c.fillStyle = "black";
             c.arc(c.node.x, c.node.y, c.nodeRadius, 0, 2 * Math.PI, false);
             c.fill();
-            c.stroke();
             c.closePath();
             cNodesList.push(Object.assign({}, c));
         });
@@ -144,18 +156,34 @@ function MSTCanvas() {
         c.beginPath();
         c.fillStyle = "green";
         c.arc(c.node.x, c.node.y, c.nodeRadius, 0, 2 * Math.PI, false);
+        c.setLineDash([]);
         c.fill();
         c.stroke();
         c.closePath();
         cNodesList.push(Object.assign({}, c));
     }
 
-    function drawResultEdges() {
-        that.resultEdgesList.forEach(element => {
+    function drawResultEdges1() {
+        that.resultEdgesList1.forEach(element => {
             c.edge = element;
             c.beginPath();
-            c.lineWidth = 20;
+            c.lineWidth = 25;
             c.strokeStyle = "red";
+            c.setLineDash([]);
+            c.moveTo(c.edge.firstNode.x, c.edge.firstNode.y);
+            c.lineTo(c.edge.secondNode.x, c.edge.secondNode.y);
+            c.stroke();
+            cEdgesList.push(Object.assign({}, c));
+        });
+    }
+
+    function drawResultEdges2() {
+        that.resultEdgesList2.forEach(element => {
+            c.edge = element;
+            c.beginPath();
+            c.lineWidth = 25;
+            c.strokeStyle = "blue";
+            c.setLineDash([20,20]);
             c.moveTo(c.edge.firstNode.x, c.edge.firstNode.y);
             c.lineTo(c.edge.secondNode.x, c.edge.secondNode.y);
             c.stroke();

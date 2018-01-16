@@ -8,7 +8,6 @@ body {
 }
 
 .canvas {
-	background-color: #ffffff; 
 	margin-top: 2%;
 	margin-left: 3%;
 	/* border: 1px solid black; */
@@ -35,18 +34,19 @@ body {
 #settingsMenu {
 	background-color: #334455;
 	width: 20vw;
-	height: 41vw;
+	height: 47vw;
 	position: fixed;
 	bottom: 5vw;
 	right: -20vw;
+	overflow-y: auto;
 	-webkit-transition: 500ms;
 }
 
 #settingsMenu p {
 	font-size: 1.4vw;
 	text-align: center;
-	margin: 1vw;
-	color: #99e1d9;
+	margin: 0.5vw;
+	color: white;
 }
 
 #settingsMenu #startNode {
@@ -59,14 +59,28 @@ body {
 	text-decoration: none;
 }
 
-#settingsMenu #selectAlgorithm {
+#settingsMenu #selectAlgorithm1 {
 	width: 16vw;
 	height: 3vw;
 	margin: 1vw;
+	margin-bottom: 0.5vw;
 	font-size: 1.5vw;
 	text-align: center;
 	color: #000000;
 	text-decoration: none;
+	border: 0.5vw solid red;
+}
+
+#settingsMenu #selectAlgorithm2 {
+	width: 16vw;
+	height: 3vw;
+	margin: 1vw;
+	margin-bottom: 0.5vw;
+	font-size: 1.5vw;
+	text-align: center;
+	color: #000000;
+	text-decoration: none;
+	border: 0.5vw solid blue;
 }
 
 #divRun {
@@ -77,15 +91,29 @@ body {
 	font-size: 1.5vw;
 	text-align: center;
 	background-color: #334455;
-	color: #ffffff;
+	color: white;
 	text-decoration: none;
 	border: 0.5vw solid #649aeb;
 }
 
 label {
 	display: block;
-	color: #649aeb;
+	color: white;
 	font-size: 1.5vw;
+}
+
+#time1 {
+	color: white;
+	font-size: 1.3vw;
+	margin: 1vw;
+	border-bottom: 0.3vw solid red;
+}
+#time2 {
+	color: white;
+	font-size: 1.3vw;
+	margin: 1vw;
+	
+	border-bottom: 0.3vw solid blue;
 }
 
 .cbx {
